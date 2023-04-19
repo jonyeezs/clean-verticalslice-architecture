@@ -11,19 +11,19 @@ Clean - to compartment-ize common execution of code in a layered manner.
 
 1. **Api** - The layers (middlewares) of the application and the use cases of our business
 
-# Use cases
+## Use cases
 
 > All the work we do solves a use case that we have for our product.
 > How consumers interact with our application, how we validate that interaction and how we handle that with business logic.
 
-## Principles
+### Principles
 
 * All work are co-located to ease navigation between code and understandable at a glance.
 * All business logic (user interface, DTOs, validations, persistent interaction, business domain smarts, and responses) are all in the same namespace and folder.
 * All code to be isolated to its own use case so that when it is refactored or tempered it will not affect another use case.
 * Each use case can work differently (ie one may be a http only endpoint another could be a messagint endpoint)
 
-## Structure
+### Structure
 
 1. **Route**
    * Uses [Carter](https://github.com/CarterCommunity/Carter) for a more fluent approach and to integrate well with OpenAPI.
@@ -49,7 +49,7 @@ Clean - to compartment-ize common execution of code in a layered manner.
       2. Reusable logic through different interfaces. (But don't mediate messages across use cases!!)
       3. Easily perform [branch by abstraction](https://www.martinfowler.com/bliki/BranchByAbstraction.html) from the `Route` if we need to feature flag or scientist logic.
 
-## Extras
+### Extras
 
 A root `Routes.cs` ties in any route names so that we can quickly see what routes are available and allow uses cases to share the routes.
 
@@ -57,17 +57,17 @@ For instance two different use cases, one for viewing recipes and the other crea
 
 Through `Routes.cs` we can share that routing name without fluffing around double-guessing ourselves if we got the right route name. _Also_ gives some cohesiveness to the whole API endpoint.
 
-# Infrastructure
+## Infrastructure
 
 > These are the layers outside of our domain. Infrastructure that runs our domain logic through the layers.
 > This follows loosely on the clean architecture. Where it diverge is that all logic pertaining to a business is bundled
 > together under the same namespace and co-located folder space.
 
-## Principles
+### Principles
 
 Classes, structs, or helpers in its root namespace (`*.Infrastructure.*`) should never be imported into any other area (_well of course other than the `program.cs`_)
 
-## Structure
+### Structure
 
 1. **Behaviours**
    * The middleware for [MediatR](https://github.com/jbogard/MediatR/wiki/Behaviors)
