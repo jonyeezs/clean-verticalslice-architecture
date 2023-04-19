@@ -1,0 +1,15 @@
+<Project>
+    <PropertyGroup>
+        <TargetFramework>net7</TargetFramework>
+        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+        <IsPackable>false</IsPackable>
+        <ImplicitUsings>true</ImplicitUsings>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <ProjectName>CleanSlice</ProjectName>
+    </PropertyGroup>
+    <Target Name="SpicNSpan" AfterTargets="Clean">
+        <RemoveDir Directories="$(BaseOutputPath)" />
+        <RemoveDir Directories="$(BaseIntermediateOutputPath)" />
+    </Target>
+</Project>
