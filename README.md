@@ -19,6 +19,8 @@ Clean - to compartment-ize common execution of code in a layered manner.
   * Would love tests to be in the same folder as code but package dependencies that tests needs aren't needed for your app. So for that sake it is best to separate the files apart.
   * Keep the tests in the same folder structure as `src` to easily navigate
   * Intergration and unit test are placed together. They are both equally as cheap and should be run at all test. _Different story if they were e2e test_.
+* **infrastructure** - Resource provisioning and docker related
+  * The local `docker-compose.yml` is in root. This creates the images to run your local environment
 
 ## Use cases
 
