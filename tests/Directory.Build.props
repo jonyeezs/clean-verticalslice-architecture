@@ -1,0 +1,6 @@
+<Project>
+    <Import Project="$([MSBuild]::GetPathOfFileAbove('Directory.Build.props', '$(MSBuildThisFileDirectory)../'))" />
+    <Target Name="ClearCoverage" AfterTargets="Clean">
+        <RemoveDir Directories="./TestResults" />
+    </Target>
+</Project>

@@ -5,11 +5,20 @@ Clean - to compartment-ize common execution of code in a layered manner.
 
 # Architecture
 
-* Folders and namespaces is the first level of understanding how the application works
-* We separate what's shared and what is commonly run amongst all our code
-* All our business logics are grouped as features/use cases/activities.
+> Folders and namespaces is the first level of understanding how the application works
+>
+> We separate what's shared and what is commonly run amongst all our code
+>
+> All our business logics are grouped as features/use cases/activities.
 
-1. **Api** - The layers (middlewares) of the application and the use cases of our business
+
+
+* **src** - Code
+  1. **Api** - The layers (middlewares) of the application and the use cases of our business
+* **tests**
+  * Would love tests to be in the same folder as code but package dependencies that tests needs aren't needed for your app. So for that sake it is best to separate the files apart.
+  * Keep the tests in the same folder structure as `src` to easily navigate
+  * Intergration and unit test are placed together. They are both equally as cheap and should be run at all test. _Different story if they were e2e test_.
 
 ## Use cases
 
