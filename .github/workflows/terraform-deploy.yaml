@@ -1,0 +1,28 @@
+name: terraform-apply
+run-name: Applying terraform done by ${{ github.actor }} from ${{ github.head_ref }}
+on:
+  pull_request:
+    types: [closed]
+    paths:
+      - 'infrastructure/**/*.tf'
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    if: ${{ github.event.pull_request.merged == true && github.event.action == 'closed' }}
+    defaults:
+      run:
+        working-directory: ./infrastructure
+    steps:
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v2
+        with:
+          # terraform_version: 1.4.2
+          cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
+
+      - name: Download outplan
+        uses: actions/download-artifact@v2
+        with:
+          name: tfplan-${{ github.head_ref }}
+
+      - name: Apply plan
+        run: terraform apply -auto-approve -input=false tfplan-${{ github.head_ref }}

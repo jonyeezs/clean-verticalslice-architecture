@@ -29,8 +29,9 @@ publish:
 	dotnet publish ./src/Api/Api.csproj --no-build -c Release --output=.publish
 
 image:
-	docker build -t $(IMAGE_NAME) -f ./infrastructure/Dockerfile .
-	@echo "Image built. You can test it with ${GREEN}${BOLD}docker run -p 8080:80 $(IMAGE_NAME)${RESET}."
+	docker build -t $(IMAGE_NAME) -f ./infrastructure/Dockerfile ${REGISTRY}/${REPOSITORY}:${IMAGE_TAG} .
+	@echo "Image built. If on local, you can test it with ${GREEN}${BOLD}docker run -p 8080:80 $(IMAGE_NAME)${RESET}."
+
 # clean, restore and build
 .PHONY: all
 all: clean restore build
