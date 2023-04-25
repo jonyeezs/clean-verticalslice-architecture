@@ -5,7 +5,8 @@ on:
     branches:
       - main
     paths-ignore:
-      - 'infrastructure/**'
+      - 'infrastructure/**/*.tf'
+      - '.github/workflows/**'
 env:
   artificate-token: ${{ github.run_id }}-${{ github.run_attempt }}
 jobs:
