@@ -12,7 +12,7 @@ terraform {
   required_version = ">= 1.1.0"
 
   cloud {
-    organization = "Whip-Up"
+    organization = "whip-up"
 
     workspaces {
       name = "csharp-clean-architecture-github-action"
