@@ -45,6 +45,7 @@ jobs:
         id: plan
         run: |
           terraform plan -no-color -input=false
+          terraform show -json planfile
           echo "::set-output name=plan_path::tfplan"
         continue-on-error: true
 
@@ -68,7 +69,7 @@ jobs:
 
             </details>
 
-            *Pushed by: @${{ github.actor }}, Action: \`${{ github.event_name }}\`*`;
+            *Pushed by: @${{ github.actor }}*`;
 
             github.rest.issues.createComment({
               issue_number: context.issue.number,
@@ -80,9 +81,3 @@ jobs:
       - name: Terraform Plan Status
         if: steps.plan.outcome == 'failure'
         run: exit 1
-
-      - name: Upload output file
-        uses: actions/upload-artifact@v3
-        with:
-          name: tfplan-${{ github.head_ref }}
-          path: ${{ steps.plan.outputs.plan_path }}
