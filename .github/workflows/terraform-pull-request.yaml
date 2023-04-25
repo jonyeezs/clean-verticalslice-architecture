@@ -45,8 +45,6 @@ jobs:
         id: plan
         run: |
           terraform plan -input=false
-          terraform show -json planfile
-          echo "::set-output name=plan_path::tfplan"
         continue-on-error: true
 
       - name: Update Pull Request
