@@ -29,6 +29,11 @@ jobs:
           # terraform_version: 1.4.2
           cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
 
+      - name: Hide bot comments
+        uses: kanga333/comment-hider@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Terraform Format
         id: fmt
         run: terraform fmt -check
