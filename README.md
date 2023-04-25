@@ -95,6 +95,13 @@ Classes, structs, or helpers in its root namespace (`*.Infrastructure.*`) should
    * Any configuration code pertaining to OpenAPI(_Swagger_)
    * Should utilize its startup API first before having huge objects to work with.
 
+# CICD
+
+Currently using github actions. The principles here are:
+
+* split the pull request and deployment into different processes.
+* allow CICD to operate using [ship-show-ask](https://martinfowler.com/articles/ship-show-ask.html)
+
 # References
 
 * Borrows ideas from https://github.com/threenine/api-template
