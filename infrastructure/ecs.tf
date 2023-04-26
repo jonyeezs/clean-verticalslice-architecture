@@ -37,7 +37,7 @@ resource "aws_ecs_service" "this" {
   desired_count = 1
 
   network_configuration {
-    subnets          = data.aws_subnet_ids.this.ids
+    subnets          = data.aws_subnets.this.ids
     security_groups  = [aws_security_group.this.id]
     assign_public_ip = true
   }

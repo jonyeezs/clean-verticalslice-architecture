@@ -14,7 +14,7 @@ resource "aws_acm_certificate" "temporary" {
 resource "aws_lb" "this" {
   name            = "${local.service}-alb"
   security_groups = [aws_security_group.this.id]
-  subnets         = data.aws_subnet_ids.this.ids
+  subnets         = data.aws_subnets.this.ids
 }
 
 resource "aws_lb_listener" "https" {
