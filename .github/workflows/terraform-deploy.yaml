@@ -10,8 +10,8 @@ on:
       - 'infrastructure/**'
 jobs:
   apply:
+    if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
-    if: ${{ github.event.pull_request.merged == true && github.event.action == 'closed' }}
     defaults:
       run:
         working-directory: ./infrastructure

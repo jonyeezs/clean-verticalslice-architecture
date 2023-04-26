@@ -5,10 +5,10 @@ concurrency:
   cancel-in-progress: ${{ github.ref != 'refs/heads/master' }}
 on:
   pull_request:
-    branches:
-      - main
-    paths-ignore:
-      - 'infrastructure/**/*.tf'
+    paths:
+      - 'src/**'
+      - 'tests/**'
+      - 'infrastructure/Dockerfile'
       - '.github/workflows/**'
 jobs:
   build-and-test:

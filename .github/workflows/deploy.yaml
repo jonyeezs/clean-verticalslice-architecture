@@ -4,8 +4,10 @@ on:
   push:
     branches:
       - main
-    paths-ignore:
-      - 'infrastructure/**/*.tf'
+    paths:
+      - 'src/**'
+      - 'tests/**'
+      - 'infrastructure/Dockerfile'
       - '.github/workflows/**'
 env:
   artificate-token: ${{ github.run_id }}-${{ github.run_attempt }}
