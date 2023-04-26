@@ -37,3 +37,7 @@ provider "aws" {
 output "url" {
   value = aws_lb.this.dns_name
 }
+
+output "image_repository" {
+  value = aws_ecr_repository.dot-net-architecture.repository_url
+}
