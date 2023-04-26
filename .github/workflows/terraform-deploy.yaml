@@ -7,7 +7,7 @@ on:
   pull_request:
     types: [closed]
     paths:
-      - 'infrastructure/**/*.tf'
+      - 'infrastructure/**'
 jobs:
   apply:
     runs-on: ubuntu-latest

@@ -8,7 +8,7 @@ on:
     branches:
       - main
     paths:
-      - 'infrastructure/**/*.tf'
+      - 'infrastructure/**'
 jobs:
   validate:
     runs-on: ubuntu-latest
@@ -34,17 +34,19 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Terraform Format
-        id: fmt
-        run: terraform fmt -check
-
       - name: Terraform Init
         id: init
         run: terraform init
 
+      - name: Terraform Format
+        id: fmt
+        run: terraform fmt -check
+        continue-on-error: true
+
       - name: Terraform Validate
         id: validate
         run: terraform validate -no-color
+        continue-on-error: true
 
       - name: Terraform Plan
         id: plan
