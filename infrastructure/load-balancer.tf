@@ -37,7 +37,7 @@ resource "aws_lb_listener" "https" {
 }
 
 resource "aws_lb_target_group" "this" {
-  name_prefix = "${local.service}-alb"
+  name        = "${local.service}-lb-tg"
   port        = 80
   protocol    = "HTTP"
   target_type = "ip"
