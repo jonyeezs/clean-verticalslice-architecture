@@ -23,4 +23,4 @@ jobs:
           cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
 
       - name: Apply plan
-        run: terraform apply -auto-approve -input=false tfplan-${{ github.head_ref }}
+        run: terraform apply -auto-approve -input=false
