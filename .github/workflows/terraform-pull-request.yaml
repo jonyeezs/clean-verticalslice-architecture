@@ -8,7 +8,7 @@ on:
     branches:
       - main
     paths:
-      - 'infrastructure/**/*.tf'
+      - 'infrastructure/**'
 jobs:
   validate:
     runs-on: ubuntu-latest
@@ -29,9 +29,15 @@ jobs:
           # terraform_version: 1.4.2
           cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
 
+      - name: Hide bot comments
+        uses: kanga333/comment-hider@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Terraform Format
         id: fmt
-        run: terraform fmt -check
+        run: terraform fmt -check -diff
+        continue-on-error: true
 
       - name: Terraform Init
         id: init
@@ -40,12 +46,12 @@ jobs:
       - name: Terraform Validate
         id: validate
         run: terraform validate -no-color
+        continue-on-error: true
 
       - name: Terraform Plan
         id: plan
         run: |
-          terraform plan -no-color -input=false -out=tfplan
-          echo "::set-output name=plan_path::tfplan"
+          terraform plan -no-color -input=false
         continue-on-error: true
 
       - name: Update Pull Request
@@ -68,7 +74,7 @@ jobs:
 
             </details>
 
-            *Pushed by: @${{ github.actor }}, Action: \`${{ github.event_name }}\`*`;
+            *Pushed by: @${{ github.actor }}*`;
 
             github.rest.issues.createComment({
               issue_number: context.issue.number,
@@ -80,9 +86,3 @@ jobs:
       - name: Terraform Plan Status
         if: steps.plan.outcome == 'failure'
         run: exit 1
-
-      - name: Upload output file
-        uses: actions/upload-artifact@v3
-        with:
-          name: tfplan-${{ github.head_ref }}
-          path: ${{ steps.plan.outputs.plan_path }}

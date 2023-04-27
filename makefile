@@ -1,4 +1,5 @@
-IMAGE_NAME=clean-slice-image
+# Repository name should match the ecr repository name (infrastructure/main.tf:34)
+IMAGE_NAME=clean-slice
 IMAGE_TAG=local
 CONFIGURATION=debug
 TEST=all
@@ -30,8 +31,14 @@ publish:
 	dotnet publish ./src/Api/Api.csproj --no-build -c Release --output=.publish
 
 image:
-	docker build -t $(IMAGE_NAME):$(IMAGE_TAG) -f ./infrastructure/Dockerfile .
+	docker build --pull -t $(IMAGE_NAME) -f ./infrastructure/Dockerfile .
+	ifeq ($(CONFIGURATION),'debug')
 	@echo "Image built. If you are in local, you can test it with ${GREEN}${BOLD}docker run -p 8080:80 $(IMAGE_NAME)${RESET}."
+	endif
+
+image-push:
+	docker tag $(IMAGE_NAME) $(IMAGE_REPOSITORY)/$(IMAGE_NAME):$(IMAGE_TAG)
+	docker push $(IMAGE_REPOSITORY)/$(IMAGE_NAME):$(IMAGE_TAG)
 
 # clean, restore and build
 .PHONY: all
