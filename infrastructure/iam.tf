@@ -4,6 +4,7 @@ locals {
   ]
 }
 
+# Role required to be set onto the task-definition.json
 resource "aws_iam_role" "task" {
   path = "/"
 
