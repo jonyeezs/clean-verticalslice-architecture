@@ -18,7 +18,7 @@ resource "aws_lb" "this" {
   subnets         = data.aws_subnets.this.ids
 }
 
-resource "aws_lb_listener" "https" {
+resource "aws_lb_listener" "this" {
   load_balancer_arn = aws_lb.this.arn
 
   port            = "443"
@@ -56,7 +56,7 @@ resource "aws_lb_target_group" "this" {
 }
 
 resource "aws_lb_listener_rule" "this" {
-  listener_arn = aws_lb_listener.https.arn
+  listener_arn = aws_lb_listener.this.arn
 
   action {
     type             = "forward"
