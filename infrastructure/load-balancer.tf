@@ -1,3 +1,4 @@
+# Remove this when when we have a proper DNS
 resource "aws_acm_certificate" "temporary" {
   domain_name       = "*.amazonaws.com"
   validation_method = "DNS"
