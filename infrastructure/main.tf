@@ -45,3 +45,7 @@ output "image_repository" {
 output "iam_task_arn" {
   value = aws_iam_role.task.arn
 }
+
+output "aws_ecs_service" {
+  value = aws_ecs_service.this.id
+}
