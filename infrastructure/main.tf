@@ -41,3 +41,7 @@ output "url" {
 output "image_repository" {
   value = aws_ecr_repository.dot-net-architecture.repository_url
 }
+
+output "iam_task_arn" {
+  value = aws_iam_role.task.arn
+}
