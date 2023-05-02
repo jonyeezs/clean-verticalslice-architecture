@@ -28,7 +28,7 @@ resource "aws_ecs_task_definition" "initiator" {
   network_mode             = "awsvpc"
 }
 
-resource "aws_ecs_service" "this" {
+resource "aws_ecs_service" "ecs_service" {
   name        = local.service
   cluster     = aws_ecs_cluster.this.id
   launch_type = "FARGATE"

@@ -47,5 +47,5 @@ output "iam_task_arn" {
 }
 
 output "aws_ecs_service" {
-  value = aws_ecs_service.this.id
+  value = aws_ecs_service.ecs_service.id
 }
