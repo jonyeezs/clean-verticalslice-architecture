@@ -9,7 +9,8 @@ on:
       - 'src/**'
       - 'tests/**'
       - 'infrastructure/Dockerfile'
-      - '.github/workflows/**'
+      - '.github/workflows/deploy.yaml'
+      - '.github/workflows/pull-request.yaml'
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
