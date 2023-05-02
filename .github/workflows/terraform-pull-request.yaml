@@ -1,7 +1,7 @@
 name: terraform-pull-request
 run-name: Terraform pull request done by ${{ github.actor }} on ${{ github.head_ref }} branch
 concurrency:
-  group: ${{ github.ref }}
+  group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: ${{ github.ref != 'refs/heads/master' }}
 on:
   pull_request:

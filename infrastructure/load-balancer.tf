@@ -1,6 +1,12 @@
+resource "aws_lb" "this" {
+  name            = "${local.service}-alb"
+  security_groups = [aws_security_group.this.id]
+  subnets         = data.aws_subnets.this.ids
+}
+
 # Remove this when when we have a proper DNS
 resource "aws_acm_certificate" "temporary" {
-  domain_name       = "*.amazonaws.com"
+  domain_name       = aws_lb.this.dns_name
   validation_method = "DNS"
 
   tags = {
@@ -10,12 +16,6 @@ resource "aws_acm_certificate" "temporary" {
   lifecycle {
     create_before_destroy = true
   }
-}
-
-resource "aws_lb" "this" {
-  name            = "${local.service}-alb"
-  security_groups = [aws_security_group.this.id]
-  subnets         = data.aws_subnets.this.ids
 }
 
 resource "aws_lb_listener" "this" {
