@@ -2,6 +2,32 @@ resource "aws_ecs_cluster" "this" {
   name = "${local.service}-cluster"
 }
 
+resource "aws_ecs_task_definition" "initiator" {
+  family             = "${local.service}-task"
+  task_role_arn      = aws_iam_role.task.arn
+  execution_role_arn = aws_iam_role.task.arn
+
+  container_definitions = jsonencode(
+    [{
+      "name" : local.service
+      "image" : "httpd:2.4",
+      "portMappings" : [
+        { containerPort = 80 }
+      ],
+      "entryPoint" : [
+        "sh",
+        "-c"
+      ],
+      "command" : [
+        "/bin/sh -c \"echo '<html> <head> <title>Attention</title> <style>body {margin-top: 40px; background-color: #333;} </style> </head><body> <div style=color:white;text-align:center> <h1>${local.service}</h1>  <p>Your application is now running on a container in Amazon ECS. Allow pipeline to deploy application.</p> </div></body></html>' >  /usr/local/apache2/htdocs/index.html && httpd-foreground\""
+      ]
+    }]
+  )
+
+  requires_compatibilities = ["FARGATE"]
+  network_mode             = "awsvpc"
+}
+
 resource "aws_ecs_service" "this" {
   name        = local.service
   cluster     = aws_ecs_cluster.this.id
@@ -13,6 +39,8 @@ resource "aws_ecs_service" "this" {
     container_name   = local.service
   }
 
+  task_definition = aws_ecs_task_definition.initiator.arn
+
   desired_count = 1
 
   network_configuration {
@@ -22,4 +50,11 @@ resource "aws_ecs_service" "this" {
   }
 
   depends_on = [aws_lb.this]
+
+  lifecycle {
+    ignore_changes = [
+      task_definition,
+      desired_count
+    ]
+  }
 }
