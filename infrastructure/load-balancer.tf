@@ -13,7 +13,7 @@ resource "aws_lb_target_group" "this" {
 
   health_check {
     path                = "/health-probe"
-    protocol            = "HTTPS"
+    protocol            = "HTTP"
     port                = "traffic-port"
     interval            = 30
     timeout             = 10
@@ -68,7 +68,7 @@ resource "aws_lb_listener_rule" "this" {
 
   condition {
     path_pattern {
-      values = ["/api/*"]
+      values = ["/api"]
     }
   }
 }
