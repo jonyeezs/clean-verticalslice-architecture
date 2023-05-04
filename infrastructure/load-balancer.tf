@@ -45,7 +45,7 @@ resource "aws_lb_listener" "this" {
   # port            = "443"
   # protocol        = "HTTPS"
   # certificate_arn = aws_acm_certificate.temporary.arn
-  ssl_policy = "ELBSecurityPolicy-2016-08"
+  # ssl_policy = "ELBSecurityPolicy-2016-08"
 
   default_action {
     type = "fixed-response"

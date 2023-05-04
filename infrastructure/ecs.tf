@@ -51,7 +51,7 @@ resource "aws_ecs_service" "ecs_service" {
     assign_public_ip = true
   }
 
-  depends_on = [aws_lb.this]
+  depends_on = [aws_lb.this, aws_lb_listener_rule.this]
 
   lifecycle {
     ignore_changes = [
