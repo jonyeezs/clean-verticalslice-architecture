@@ -23,6 +23,8 @@ resource "aws_ecs_task_definition" "initiator" {
       ]
     }]
   )
+  cpu    = 256
+  memory = 512
 
   requires_compatibilities = ["FARGATE"]
   network_mode             = "awsvpc"
