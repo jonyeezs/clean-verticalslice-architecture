@@ -22,10 +22,11 @@ terraform {
 
 locals {
   service = "clean-slice"
+  region  = "ap-southeast-2"
 }
 
 provider "aws" {
-  region = "ap-southeast-2"
+  region = local.region
   default_tags {
     tags = {
       Environment = "Production"

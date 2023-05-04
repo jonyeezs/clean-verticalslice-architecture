@@ -11,16 +11,29 @@ resource "aws_ecs_task_definition" "initiator" {
     [{
       "name" : local.service
       "image" : "httpd:2.4",
+      "essential" : true,
+      "logConfiguration" : {
+        "logDriver" : "awslogs",
+        "options" : {
+          "awslogs-region" : local.region,
+          "awslogs-stream-prefix" : "${local.service}",
+          "awslogs-group" : "/ecs/${local.service}-production"
+        }
+      },
       "portMappings" : [
-        { containerPort = 80 }
+        {
+          "containerPort" : 80,
+          "hostPort" : 80,
+          "protocol" : "tcp"
+        }
       ],
       "entryPoint" : [
         "sh",
         "-c"
       ],
       "command" : [
-        "/bin/sh -c \"echo '<html> <head> <title>Attention</title> <style>body {margin-top: 40px; background-color: #333;} </style> </head><body> <div style=color:white;text-align:center> <h1>${local.service}</h1>  <p>Your application is now running on a container in Amazon ECS. Allow pipeline to deploy application.</p> </div></body></html>' >  /usr/local/apache2/htdocs/index.html && httpd-foreground\""
-      ]
+        "/bin/sh -c \"echo '<html> <head> <title>Amazon ECS Sample App</title> <style>body {margin-top: 40px; background-color: #333;} </style> </head><body> <div style=color:white;text-align:center> <h1>Amazon ECS Sample App</h1> <h2>Congratulations!</h2> <p>Your application is now running on a container in Amazon ECS.</p> </div></body></html>' >  /usr/local/apache2/htdocs/index.html && httpd-foreground\""
+      ],
     }]
   )
   cpu    = 256
@@ -28,6 +41,10 @@ resource "aws_ecs_task_definition" "initiator" {
 
   requires_compatibilities = ["FARGATE"]
   network_mode             = "awsvpc"
+}
+
+resource "aws_cloudwatch_log_group" "task" {
+  name = "${local.service}-production"
 }
 
 resource "aws_ecs_service" "ecs_service" {
