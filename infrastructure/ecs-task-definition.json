@@ -4,22 +4,23 @@
             "logConfiguration": {
                 "logDriver": "awslogs",
                 "options": {
-                    "awslogs-group": "/ecs/clean-slice-task",
+                    "awslogs-group": "/ecs/clean-slice",
                     "awslogs-region": "ap-southeast-2",
-                    "awslogs-stream-prefix": "ecs"
+                    "awslogs-stream-prefix": "clean-slice"
                 }
             },
             "name": "clean-slice",
             "portMappings": [
                 {
                     "containerPort": 80,
+                    "hostPort": 80,
                     "protocol": "tcp"
                 }
             ]
         }
     ],
-    "executionRoleArn": "arn:aws:iam::012345678910:role/ecsTaskExecutionRole",
-    "taskRoleArn": "arn:aws:iam::123456789012:role/AmazonECSTaskS3BucketRole",
+    "executionRoleArn": "arn:aws:iam::467945566648:role/terraform-20230427135024309700000002",
+    "taskRoleArn": "arn:aws:iam::467945566648:role/terraform-20230427135024309700000002",
     "family": "clean-slice-task",
     "networkMode": "awsvpc",
     "runtimePlatform": {

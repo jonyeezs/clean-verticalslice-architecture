@@ -15,9 +15,9 @@ resource "aws_ecs_task_definition" "initiator" {
       "logConfiguration" : {
         "logDriver" : "awslogs",
         "options" : {
-          "awslogs-region" : local.region,
+          "awslogs-region" : "${local.region}",
           "awslogs-stream-prefix" : "${local.service}",
-          "awslogs-group" : "/ecs/${local.service}-production"
+          "awslogs-group" : "/ecs/${local.service}"
         }
       },
       "portMappings" : [
