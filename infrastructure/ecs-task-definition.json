@@ -4,9 +4,10 @@
             "logConfiguration": {
                 "logDriver": "awslogs",
                 "options": {
-                    "awslogs-group": "/ecs/clean-slice",
+                    "awslogs-group": "clean-slice-task",
                     "awslogs-region": "ap-southeast-2",
-                    "awslogs-stream-prefix": "clean-slice"
+                    "awslogs-stream-prefix": "clean-slice",
+                    "awslogs-create-group": "true"
                 }
             },
             "name": "clean-slice",
