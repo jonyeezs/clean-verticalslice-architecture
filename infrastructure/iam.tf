@@ -42,7 +42,8 @@ resource "aws_iam_role_policy" "task" {
           "Action" : [
             "logs:CreateLogGroup",
             "logs:DeleteLogGroup",
-            "logs:CreateLogStream"
+            "logs:CreateLogStream",
+            "logs:PutLogEvent"
           ],
           "Resource" : "*"
         }
