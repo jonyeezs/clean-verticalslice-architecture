@@ -1,6 +1,16 @@
 {
+    "family": "clean-slice-task",
+    "networkMode": "awsvpc",
     "containerDefinitions": [
         {
+            "name": "clean-slice",
+            "portMappings": [
+                {
+                    "containerPort": 80,
+                    "hostPort": 80,
+                    "protocol": "tcp"
+                }
+            ],
             "logConfiguration": {
                 "logDriver": "awslogs",
                 "options": {
@@ -9,25 +19,17 @@
                     "awslogs-stream-prefix": "clean-slice",
                     "awslogs-create-group": "true"
                 }
-            },
-            "name": "clean-slice",
-            "portMappings": [
-                {
-                    "containerPort": 80,
-                    "hostPort": 80,
-                    "protocol": "tcp"
-                }
-            ]
+            }
         }
     ],
     "executionRoleArn": "arn:aws:iam::467945566648:role/terraform-20230427135024309700000002",
     "taskRoleArn": "arn:aws:iam::467945566648:role/terraform-20230427135024309700000002",
-    "family": "clean-slice-task",
-    "networkMode": "awsvpc",
     "runtimePlatform": {
         "operatingSystemFamily": "LINUX"
     },
     "requiresCompatibilities": [
         "FARGATE"
-    ]
+    ],
+    "cpu": "256",
+    "memory": "512"
 }
