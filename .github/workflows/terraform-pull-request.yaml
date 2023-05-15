@@ -34,6 +34,29 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
 
+      - uses: actions/cache@v3
+        name: Cache plugin dir
+        with:
+          path: ~/.tflint.d/plugins
+          key: ${{ github.head_ref }}-tflint-${{ hashFiles('**/.tflint.hcl') }}
+
+      - uses: terraform-linters/setup-tflint@v3
+        name: Setup TFLint
+        with:
+          tflint_version: v0.44.1
+
+      - name: Show version
+        run: tflint --version
+
+      - name: Init TFLint
+        run: tflint --init
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Run TFLint
+        run: tflint -f compact
+        continue-on-error: true
+
       - name: Terraform Format
         id: fmt
         run: terraform fmt -check -diff
