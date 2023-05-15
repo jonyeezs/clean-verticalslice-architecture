@@ -43,10 +43,14 @@ output "image_repository_url" {
   value = aws_ecr_repository.dot-net-architecture.repository_url
 }
 
-output "iam_task_arn" {
-  value = aws_iam_role.task.arn
+output "iam_execution_task_arn" {
+  value = aws_iam_role.task_execution.arn
 }
 
 output "aws_ecs_service" {
   value = aws_ecs_service.ecs_service.id
+}
+
+output "aws_ecs_init_task_definition_arn" {
+  value = aws_ecs_task_definition.initiator.arn
 }
