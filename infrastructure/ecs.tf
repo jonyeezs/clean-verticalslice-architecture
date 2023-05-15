@@ -5,8 +5,7 @@ resource "aws_ecs_cluster" "this" {
 resource "aws_ecs_task_definition" "initiator" {
   family             = "${local.service}-task"
   network_mode       = "awsvpc"
-  task_role_arn      = aws_iam_role.task.arn
-  execution_role_arn = aws_iam_role.task.arn
+  execution_role_arn = aws_iam_role.task_execution.arn
 
   container_definitions = jsonencode([
     {
@@ -42,10 +41,6 @@ resource "aws_ecs_task_definition" "initiator" {
   requires_compatibilities = ["FARGATE"]
   cpu                      = 256
   memory                   = 512
-}
-
-resource "aws_cloudwatch_log_group" "task" {
-  name = "${local.service}-production"
 }
 
 resource "aws_ecs_service" "ecs_service" {
