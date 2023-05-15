@@ -5,16 +5,15 @@ resource "aws_ecs_cluster" "this" {
 resource "aws_ecs_task_definition" "initiator" {
   family             = "${local.service}-task"
   network_mode       = "awsvpc"
-  task_role_arn      = aws_iam_role.task.arn
-  execution_role_arn = aws_iam_role.task.arn
+  execution_role_arn = aws_iam_role.task_execution.arn
 
   container_definitions = jsonencode([
     {
       "name" : "clean-slice",
-      "image" : "httpd:2.4",
+      "image" : "nginxdemos/nginx-hello:0.2",
       "portMappings" : [
         {
-          "containerPort" : 80,
+          "containerPort" : 8080,
           "hostPort" : 80,
           "protocol" : "tcp"
         }
@@ -28,24 +27,13 @@ resource "aws_ecs_task_definition" "initiator" {
           "awslogs-create-group" : "true"
         }
       },
-      "essential" : true,
-      "entryPoint" : [
-        "sh",
-        "-c"
-      ],
-      "command" : [
-        "/bin/sh -c \"echo '<html> <head> <title>Temporary page</title> <style>body {margin-top: 40px; background-color: #333;} </style> </head><body> <div style=color:white;text-align:center> <h2>Congratulations!</h2> <p>Now ready for CICD.</p> </div></body></html>' >  /usr/local/apache2/htdocs/index.html && httpd-foreground\""
-      ]
+      "essential" : true
     }
   ])
 
   requires_compatibilities = ["FARGATE"]
-  cpu                      = 256
-  memory                   = 512
-}
-
-resource "aws_cloudwatch_log_group" "task" {
-  name = "${local.service}-production"
+  cpu                      = 1
+  memory                   = 256
 }
 
 resource "aws_ecs_service" "ecs_service" {
