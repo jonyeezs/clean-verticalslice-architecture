@@ -10,10 +10,10 @@ resource "aws_ecs_task_definition" "initiator" {
   container_definitions = jsonencode([
     {
       "name" : "clean-slice",
-      "image" : "nginxdemos/nginx-hello:0.2",
+      "image" : "nginxdemos/hello:0.3",
       "portMappings" : [
         {
-          "containerPort" : 8080,
+          "containerPort" : 80,
           "hostPort" : 80,
           "protocol" : "tcp"
         }
