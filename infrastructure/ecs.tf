@@ -32,7 +32,7 @@ resource "aws_ecs_task_definition" "initiator" {
   ])
 
   requires_compatibilities = ["FARGATE"]
-  cpu                      = 1
+  cpu                      = 256
   memory                   = 256
 }
 
