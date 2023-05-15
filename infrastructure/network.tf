@@ -8,7 +8,3 @@ data "aws_subnets" "this" {
     values = [data.aws_vpc.this.id]
   }
 }
-
-data "aws_region" "current" {}
-
-data "aws_caller_identity" "current" {}
