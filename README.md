@@ -107,3 +107,4 @@ Currently using github actions. The principles here are:
 
 * Borrows ideas from https://github.com/threenine/api-template
 * Understanding how to layout your folders from [Architecture the Lost Years by Robert Martin](https://youtu.be/WpkDN78P884)
+* How to do vertical slice architecture by [Jimmy Bogard](https://youtu.be/SUiWfhAhgQw)
