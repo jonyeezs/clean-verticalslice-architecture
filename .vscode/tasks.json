@@ -3,10 +3,11 @@
     "tasks": [
         {
             "label": "build",
-            "command": "dotnet",
+            "command": "make",
             "type": "process",
             "args": [
-                "cake",
+                "build",
+                "--",
                 "--target=Build",
                 "--configuration=Debug",
                 "-e",
@@ -15,13 +16,10 @@
         },
         {
             "label": "publish",
-            "command": "dotnet",
+            "command": "make",
             "type": "process",
             "args": [
-                "publish",
-                "${workspaceFolder}/src/Api/Api.csproj",
-                "/property:GenerateFullPaths=true",
-                "/consoleloggerparameters:NoSummary"
+                "publish"
             ],
             "problemMatcher": "$msCompile"
         },

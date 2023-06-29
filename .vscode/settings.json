@@ -3,5 +3,6 @@
         "Behaviour",
         "Behaviours",
         "Npgsql"
-    ]
+    ],
+    "dotnet.defaultSolution": "DotNetArchitecture.sln"
 }
