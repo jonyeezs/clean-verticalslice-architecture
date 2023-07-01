@@ -2,6 +2,7 @@ using Carter;
 using Carter.OpenApi;
 using CleanSlice.Api.Common.DTOs;
 using MediatR;
+using Microsoft.AspNetCore.Mvc;
 
 namespace CleanSlice.Api.UseCases.CreateRecipe
 {
@@ -9,7 +10,7 @@ namespace CleanSlice.Api.UseCases.CreateRecipe
     {
         public void AddRoutes(IEndpointRouteBuilder app)
         {
-            _ = app.MapPost(DomainRoutes.RECIPE, async (CreateRecipeRequest request, CancellationToken cancellationToken, IMediator mediator)
+            _ = app.MapPost(DomainRoutes.RECIPE, async ([FromBody] CreateRecipeRequest request, CancellationToken cancellationToken, IMediator mediator)
                 =>
             {
                 CreateRecipeResponse response = await mediator.Send(request, cancellationToken);
