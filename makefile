@@ -38,7 +38,7 @@ test: build
 publish:
 	@echo "Publish will only be done in Release. Rebuilding Api.csproj with Release"
 	dotnet build ./src/Api/Api.csproj --no-restore -c Release -p:UseSharedCompilation=false
-	dotnet publish ./src/Api/Api.csproj --no-build -c Release --output=.publish -p:GenerateFullPaths=true;GenerateFullPaths=true;consoleloggerparameters:NoSummary
+	dotnet publish ./src/Api/Api.csproj --no-build -c Release --output=.publish -p:GenerateFullPaths=true
 
 image:
 	docker build --pull -t $(IMAGE_NAME) -f ./infrastructure/Dockerfile .
