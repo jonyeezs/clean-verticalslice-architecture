@@ -3,11 +3,19 @@ using CleanSlice.Api.Common.Exceptions;
 using FluentValidation;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
+using ILogger = Serilog.ILogger;
 
 namespace CleanSlice.Api.Infrastructure.Middleware
 {
     internal class ExceptionHandlingMiddleware : IMiddleware
     {
+        private readonly ILogger _logger;
+
+        public ExceptionHandlingMiddleware(ILogger Logger)
+        {
+            _logger = Logger;
+        }
+
         public async Task InvokeAsync(HttpContext context, RequestDelegate next)
         {
             try
@@ -16,8 +24,23 @@ namespace CleanSlice.Api.Infrastructure.Middleware
             }
             catch (Exception e)
             {
+                LogException(context, e);
                 await HandleException(context, e);
             }
+        }
+
+        private void LogException(HttpContext context, Exception exception)
+        {
+            switch (exception)
+            {
+                case ApiException:
+                case ValidationException:
+                    _logger.Warning(exception, "Error handling {RequestMethod} {RequestUrl}", context.Request.Method, context.Request.Path);
+                    break;
+                default:
+                    _logger.Error(exception, "Error handling  {RequestMethod} {RequestUrl}", context.Request.Method, context.Request.Path);
+                    break;
+            };
         }
 
         private static async Task HandleException(HttpContext httpContext, Exception exception)
@@ -28,8 +51,8 @@ namespace CleanSlice.Api.Infrastructure.Middleware
             {
                 Title = GetTitle(exception),
                 Status = statusCode,
-                Detail = exception.Message,
-                Errors = GetErrors(exception)
+                Detail = statusCode == StatusCodes.Status500InternalServerError ? "An error occurred and we're working hard to get this working for you again" : exception.Message,
+                Errors = statusCode == StatusCodes.Status500InternalServerError ? new Dictionary<string, string[]>() : GetErrors(exception)
             };
 
             httpContext.Response.ContentType = "application/json";
@@ -49,8 +72,9 @@ namespace CleanSlice.Api.Infrastructure.Middleware
         {
             return exception switch
             {
-                NotFoundException nf => nf.Title,
+                ApiException apie => apie.Message,
                 ValidationException ve => ve.Message,
+                BadHttpRequestException ve => "Bad request made. Please check your request again.",
                 _ => "Server Error"
             };
         }
@@ -62,6 +86,7 @@ namespace CleanSlice.Api.Infrastructure.Middleware
 
                 NotFoundException => StatusCodes.Status404NotFound,
                 ValidationException => StatusCodes.Status400BadRequest,
+                BadHttpRequestException => StatusCodes.Status400BadRequest,
                 _ => StatusCodes.Status500InternalServerError
             };
         }

@@ -9,8 +9,9 @@ namespace CleanSlice.Api.Infrastructure.Behaviours
         private readonly IEnumerable<IValidator<TRequest>> _validators;
         private readonly ILogger _logger;
 
-        public ValidationBehaviour(IEnumerable<IValidator<TRequest>> validators, ILogger Logger)
+        public ValidationBehaviour(IEnumerable<IValidator<TRequest>> validators, ILogger Logger, IValidator<TRequest> validator)
         {
+            var val = validator;
             _validators = validators;
             _logger = Logger;
         }

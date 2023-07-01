@@ -3,7 +3,7 @@ namespace CleanSlice.Api.Common.Exceptions
     [Serializable]
     public class NotFoundException : ApiException
     {
-        public NotFoundException(string title, string message) : base(title, message)
+        public NotFoundException(string message) : base(message)
         {
         }
 
@@ -11,11 +11,7 @@ namespace CleanSlice.Api.Common.Exceptions
         {
         }
 
-        public NotFoundException(string? message) : base(message)
-        {
-        }
-
-        public NotFoundException(string? message, Exception? innerException) : base(message, innerException)
+        public NotFoundException(string message, Exception innerException) : base(message, innerException)
         {
         }
 

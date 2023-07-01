@@ -2,9 +2,9 @@ namespace CleanSlice.Api.UseCases.CreateRecipe
 {
     public record CreateRecipeResponse
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
 
-        public CreateRecipeResponse(int id)
+        public CreateRecipeResponse(Guid id)
         {
             Id = id;
         }

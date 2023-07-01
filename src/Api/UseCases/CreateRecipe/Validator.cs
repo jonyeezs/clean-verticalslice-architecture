@@ -6,7 +6,7 @@ namespace CleanSlice.Api.UseCases.CreateRecipe
     {
         public Validator()
         {
-            _ = RuleFor(x => x.Name).NotEmpty();
+            RuleFor(x => x.Title).NotEmpty();
         }
     }
 }

@@ -1,16 +1,19 @@
+using System.Reflection;
 using Carter;
 using Carter.OpenApi;
 using Carter.ResponseNegotiators.Newtonsoft;
+using CleanSlice.Api.Common.Interfaces;
 using CleanSlice.Api.Infrastructure.Behaviours;
 using CleanSlice.Api.Infrastructure.Middleware;
 using CleanSlice.Api.Infrastructure.Swagger;
+using DataLayer;
 using FluentValidation;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using Serilog;
 
-const string ConnectionsStringName = "Local_DB";
+const string RecipeConnectionStringSettingName = "Recipe";
 
 
 Log.Logger = new LoggerConfiguration()
@@ -20,6 +23,9 @@ Log.Logger = new LoggerConfiguration()
 Log.Information("Starting up");
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddDbContext<RecipeContext>((opts) => opts.UseNpgsql(builder.Configuration.GetConnectionString(RecipeConnectionStringSettingName)));
+
 builder.Services.AddHealthChecks();
 builder.Services.AddEndpointsApiExplorer();
 builder.Host.UseSerilog((ctx, lc) => lc
@@ -53,13 +59,20 @@ builder.Services.AddMediatR(cfg =>
     _ = cfg.AddOpenBehavior(typeof(TransactionBehaviour<,>));
 });
 
+// Add all implementation of available IDbAccess
+foreach (var t in Assembly.GetExecutingAssembly().GetTypes()
+    .Where(c => !c.IsInterface
+        && c.GetInterfaces().Any(x => x.IsGenericType && x.GetGenericTypeDefinition() == typeof(IDbAccess<,>))))
+{
+    var genericInterface = t.GetInterfaces().First(x => x.GetGenericTypeDefinition() == typeof(IDbAccess<,>));
+    builder.Services.AddScoped(genericInterface, t);
+}
+
+
 builder.Services.AddTransient<ExceptionHandlingMiddleware>();
 
-builder.Services.AddValidatorsFromAssemblyContaining<Program>();
-
-string connectionString = builder.Configuration.GetConnectionString(ConnectionsStringName) ?? "";
-
-builder.Services.AddAutoMapper(typeof(Program));
+builder.Services.AddValidatorsFromAssemblyContaining<Program>(ServiceLifetime.Scoped,
+    (a) => !typeof(INonInjectableValidator).IsAssignableFrom(a.ValidatorType));
 
 //
 WebApplication app = builder.Build();

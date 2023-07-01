@@ -3,6 +3,11 @@
         <RootNamespace>$(ProjectName).Api</RootNamespace>
     </PropertyGroup>
     <ItemGroup>
+        <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.8" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.5">
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+            <PrivateAssets>all</PrivateAssets>
+        </PackageReference>
         <PackageReference Include="AutoMapper" Version="12.0.0" />
         <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.0" />
         <PackageReference Include="Carter" Version="7.0.1" />
@@ -14,8 +19,6 @@
         <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.5.2" />
         <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="7.0.5" />
         <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-        <PackageReference Include="Npgsql" Version="6.0.7" />
-        <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="6.0.7" />
         <PackageReference Include="Serilog.Exceptions" Version="8.4.0" />
         <PackageReference Include="Serilog.Settings.Configuration" Version="3.4.0" />
         <PackageReference Include="Serilog.Sinks.Seq" Version="5.2.1" />
@@ -25,5 +28,8 @@
         <PackageReference Include="Serilog.AspNetCore" Version="6.0.1" />
         <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
         <PackageReference Include="Swashbuckle.AspNetCore.Annotations" Version="6.4.0" />
+    </ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\DataLayer\DataLayer.csproj" />
     </ItemGroup>
 </Project>

@@ -6,13 +6,10 @@ namespace CleanSlice.Api.UseCases.RetrieveRecipes
 
         public string Title { get; init; }
 
-        public string Author { get; init; }
-
-        public RetrieveRecipesResponse(string url, string title, string author)
+        public RetrieveRecipesResponse(string url, string title)
         {
             Url = url;
             Title = title;
-            Author = author;
         }
     }
 }
