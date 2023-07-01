@@ -7,10 +7,6 @@
             "type": "process",
             "args": [
                 "build",
-                "--",
-                "--target=Build",
-                "--configuration=Debug",
-                "-e",
             ],
             "problemMatcher": "$msCompile"
         },

@@ -8,14 +8,14 @@ services:
       - 5341:5341
     environment:
       ACCEPT_EULA: Y
-    networks: 
+    networks:
       - dotnetarchitecture
   postgres:
-    container_name: dotnetarchitecture_postgre
+    container_name: dotnetarchitecture_postgres
     image: postgres
     env_file:
       - .env
-    
+
     volumes:
       - postgres:/data/postgres
     ports:

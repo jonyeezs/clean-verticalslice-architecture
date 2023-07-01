@@ -22,13 +22,23 @@ build:
     # Details in https://github.com/dotnet/runtime/issues/77723
 	dotnet build -c=$(CONFIGURATION) -p:UseSharedCompilation=false
 
+# If the first argument is "migration"...
+ifeq (ef,$(firstword $(MAKECMDGOALS)))
+  # use the rest as arguments for "run"
+  EF_ARGS := $(wordlist 2,$(words $(MAKECMDGOALS)),$(MAKECMDGOALS))
+  # ...and turn them into do-nothing targets
+  $(eval $(EF_ARGS):;@:)
+endif
+ef: build
+	dotnet ef $(EF_ARGS) --startup-project=./src/Api/Api.csproj --project=./src/DataLayer/DataLayer.csproj --no-build
+
 test: build
 	$(foreach project,$(PROJECTS),dotnet test $(project) --no-build --collect:"XPlat Code Coverage" -v n;)
 
 publish:
 	@echo "Publish will only be done in Release. Rebuilding Api.csproj with Release"
 	dotnet build ./src/Api/Api.csproj --no-restore -c Release -p:UseSharedCompilation=false
-	dotnet publish ./src/Api/Api.csproj --no-build -c Release --output=.publish
+	dotnet publish ./src/Api/Api.csproj --no-build -c Release --output=.publish -p:GenerateFullPaths=true;GenerateFullPaths=true;consoleloggerparameters:NoSummary
 
 image:
 	docker build --pull -t $(IMAGE_NAME) -f ./infrastructure/Dockerfile .
