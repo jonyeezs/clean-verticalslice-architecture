@@ -1,35 +1,31 @@
 {
-    "version": "2.0.0",
-    "tasks": [
-        {
-            "label": "build",
-            "command": "make",
-            "type": "process",
-            "args": [
-                "build",
-            ],
-            "problemMatcher": "$msCompile"
-        },
-        {
-            "label": "publish",
-            "command": "make",
-            "type": "process",
-            "args": [
-                "publish"
-            ],
-            "problemMatcher": "$msCompile"
-        },
-        {
-            "label": "watch",
-            "command": "dotnet",
-            "type": "process",
-            "args": [
-                "watch",
-                "run",
-                "--project",
-                "${workspaceFolder}/src/Api/Api.csproj"
-            ],
-            "problemMatcher": "$msCompile"
-        },
-    ]
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "build",
+      "command": "make",
+      "type": "process",
+      "args": ["build"],
+      "problemMatcher": "$msCompile"
+    },
+    {
+      "label": "publish",
+      "command": "make",
+      "type": "process",
+      "args": ["publish"],
+      "problemMatcher": "$msCompile"
+    },
+    {
+      "label": "watch",
+      "command": "dotnet",
+      "type": "process",
+      "args": [
+        "watch",
+        "run",
+        "--project",
+        "${workspaceFolder}/dotnet/src/Api/Api.csproj"
+      ],
+      "problemMatcher": "$msCompile"
+    }
+  ]
 }

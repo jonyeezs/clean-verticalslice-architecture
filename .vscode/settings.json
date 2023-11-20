@@ -1,8 +1,4 @@
 {
-    "cSpell.words": [
-        "Behaviour",
-        "Behaviours",
-        "Npgsql"
-    ],
-    "dotnet.defaultSolution": "DotNetArchitecture.sln"
+  "cSpell.words": ["Behaviour", "Behaviours", "Npgsql"],
+  "dotnet.defaultSolution": "/dotnet/DotNetArchitecture.sln"
 }
