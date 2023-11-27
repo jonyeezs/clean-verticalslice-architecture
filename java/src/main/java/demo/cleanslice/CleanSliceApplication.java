@@ -1,4 +1,4 @@
-package demo.cleanslice.cleanslice;
+package demo.cleanslice;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
