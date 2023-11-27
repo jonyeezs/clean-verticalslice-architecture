@@ -35,6 +35,10 @@ This is where [Vertical Slice Architecture](https://www.jimmybogard.com/vertical
 Using the principles of clean architecture we integrate the pieces we need to make a feature work and gather them under
 the same umbrella we less ceremonies and abstraction.
 
+Talking about abstractions - because our code is now strongly cohesive and decoupled from the concerns of other features, we can remove all the abstractions such as dto or adaptor services.
+
+We choose pragmatism over dogmatism. Write code that allows us to read quickly. Less code to manage. Lower jumping around. Add abstraction only when it stops us from extending our code sanely.
+
 ## Glossary
 
 Some important terms to know when reading this:
@@ -77,7 +81,7 @@ _Do note from one language to another the structures may look slightly different
    * The most would be information or metadata about the controller, such as: Does it have authorization? What kind of request does it take? How should it respond to the user?
    * Each use case should only have a single route but multiple types: ie one could be a HTTP method and the other a GRPC method.
    * Its requests and responses of the route are to be declared here. The most it could have are validation metadata on the requests.
-   * The requests should then be mapped into a [DTO](https://www.ssw.com.au/rules/the-difference-between-data-transfer-objects-and-view-models/#what-is-a-dto) that allows it communicate to the next layer, the handler.
+   * The requests should be mapped into a [DTO](https://www.ssw.com.au/rules/the-difference-between-data-transfer-objects-and-view-models/#what-is-a-dto) when there are different modes of controllers that has different transform from request to our handler's command.
 2. **Handler**
    * The crux of the interaction between the request and the domain logic.
    * In the Clean Architecture this would be the `application` layer. The one that orchestrates the business domain work.
