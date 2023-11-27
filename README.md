@@ -39,24 +39,23 @@ the same umbrella we less ceremonies and abstraction.
 
 Some important terms to know when reading this:
 
-* **layers**: when we mention layers we are talking about layers in a clean architecture sense.
-* **use cases**: when we mention use cases we are talking about use cases in a vertical slice concept.
-* **data access layer**: Specific to the layer interacting with a database (https://en.wikipedia.org/wiki/Data_access_layer). This could be an ORM of sort.
-* **auxiliary service**: Services, SDK or code that we use to connect to external data. Some call it [brokers](https://github.com/hassanhabib/The-Standard/blob/master/1.%20Brokers/1.%20Brokers.md). e.g: third-party API, data layer access, email services, notification services, etc.
+* **Layers**: when we mention layers we are talking about layers in a clean architecture sense.
+* **Use Cases**: when we mention use cases we are talking about use cases in a vertical slice concept. Also known as features.
 * **Aggregate root**: the terminology used in Domain Driven Design. Aggregate root is a cluster of associated objects that we treat as a unit for the purpose of data changes.
 
 ## Code placement
 
-To provide some guidelines to where code should exist, we will break them down into two categories:
+To provide some guidelines to where code should exist, we will break them down into three categories (or layers):
 
-  1. **Use cases** - All code and its layers specific to a vertical slice.
-  2. **Infrastructure** - Albeit each use case has its own layers, there will be shared/common infrastructure; this is where it ends up.
+  1. **Use case** - All code and its layers specific to a vertical slice.
+  2. **Broker** - Adapters, SDK or code that we use to connect to an external data source. Have a read on what [The Standard](https://github.com/hassanhabib/The-Standard/blob/master/1.%20Brokers/1.%20Brokers.md) says about it. e.g: third-party API, repository patterns, email services, notification services, etc.
+  3. **Infrastructure** - Albeit each use case has its own layers, there will be shared/common infrastructure; this is where it ends up.
 
 Continuing on are more in-depth explanation of each category.
 
 _Do note from one language to another the structures may look slightly different. But the core concepts are the same and may be called slightly differently to suit the conventions of the particular language._
 
-# Use cases
+# Use case
 
 > All the work we do solves a use case that we have for our product.
 > How consumers interact with our application, how we validate that interaction and how we handle that with business logic.
@@ -83,7 +82,7 @@ _Do note from one language to another the structures may look slightly different
    * The crux of the interaction between the request and the domain logic.
    * In the Clean Architecture this would be the `application` layer. The one that orchestrates the business domain work.
    * The handler should only be dealing with abstract data types.
-   * It understands how to inject in the layers above, such as any auxiliary services or the DTO from `Route`.
+   * It understands how to inject in the layers above it, such as any broker or the DTO from `Route`.
    * As well this will the touch point where we then send the data back to the `Route`.
 3. **Data Access & Domain**
    * These two components plays apart in maintaining our state
@@ -96,9 +95,9 @@ _Do note from one language to another the structures may look slightly different
      * and this follows close to the [vertical slice architecture](https://codeopinion.com/restructuring-to-a-vertical-slice-architecture/).
    * **Data Access**
       * Every use case requires access to a set of data so ever differently
-      * This is where we gather all the auxiliary services we need to interact with.
+      * This is where we gather all the brokers we need to interact with.
       * Here we can piece together the aggregates that we need to form our domain.
-        * Think about this as our [Aggregate factory](https://medium.com/withbetterco/using-aggregates-and-factories-in-domain-driven-design-34e0dff220c3#ac00).
+        * Think about it as our [Aggregate factory](https://medium.com/withbetterco/using-aggregates-and-factories-in-domain-driven-design-34e0dff220c3#ac00).
       * The data access should generate our domain and understand how to update our persistent layer with the mutated domain.
    * **Domain**
      * `Domain` is our aggregate root for this use case
@@ -106,10 +105,21 @@ _Do note from one language to another the structures may look slightly different
      * This should be the only place we can change the state.
      * There should be, dare say, no dependencies here.
        * When we deal with plain objects, it helps us to test the domain logic easily for edge cases and multiple cases.
-       * Hence, this should not have dependencies on any other services. Stay away from "_God objects_".
+       * Hence, this should not have dependencies on any other services/brokers. Stay away from "_God objects_".
      * _"What if i need a function from say a time calculator?"_. Answer:
-       * Use it as an interface into your domain method's argument. The IOC will be managed by the `handler`.
+       * Use an interface onto your domain method's argument. The IOC will then be the `handler`.
        * Think of this as a pure function of inputs and outputs (albeit the output is the domain object itself).
+
+# Broker
+
+> Brokers are a liaison between business logic and the outside world. They are wrappers around external libraries, resources, services, or APIs to satisfy a local interface for the business to interact with them
+
+## Principles
+
+* There should be no business logic here.
+* They should be as thin as possible; just a wrapper around our code.
+* At most a mapper from the external API into an internal interface that we can work with
+* The interface should be generic and as known and understood as time itself. For instance if it is a CRUD API, we should only have get, post, delete methods. How those APIs are called are totally unknown to the consumers of the broker.
 
 # Infrastructure
 
@@ -123,25 +133,9 @@ This is where such code resides.
 
 Code that are needed for the framework and not dependent to the core of the feature.
 
-Most often the common auxiliary services would be managed here.
-
 Through dependency injection, they can be used by the inner layer that resides in our use case.
 
 Think of it this way, if we remove this code does it impede the essence and goal of our use case?
-
-## DataLayer
-
-> Code that opens a window into our database for code usage
-
-Contains the [Data Access Layer](https://en.wikipedia.org/wiki/Data_access_layer) and migration plan
-
-### Principles
-
-* There should not be any business logic here.
-* What should be in here is code that describes the schema and structure of our database.
-* It also provides the direct operations on our database such as saving, deleting, etc.
-  * ie: the repository patterns or ORMs.
-* A benefit having our database entities placed here is the psychological visual indicator that these objects are bound to the database schema and should not be used as our DTO within our application. It is a DTO but one that is to view into our database layer.
 
 
 # CICD

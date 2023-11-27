@@ -1,6 +1,6 @@
 namespace CleanSlice.Api.Common.Interfaces
 {
-    public interface IDbAccess<TDomain, TAggregateRoot>
+    public interface IDataAccess<TDomain, TAggregateRoot>
     {
         TDomain Retrieve();
 

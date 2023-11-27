@@ -5,11 +5,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CleanSlice.Api.UseCases.CreateRecipe
 {
-    public class DbAccess : IDbAccess<RecipeBook, IList<(Guid Id, string Title)>>
+    public class DataAccess : IDataAccess<RecipeBook, IList<(Guid Id, string Title)>>
     {
         private readonly RecipeContext recipeContext;
 
-        public DbAccess(RecipeContext recipeContext)
+        public DataAccess(RecipeContext recipeContext)
         {
             this.recipeContext = recipeContext;
         }

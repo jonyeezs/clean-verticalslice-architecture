@@ -29,13 +29,11 @@
       1. The [Behaviours](https://github.com/jbogard/MediatR/wiki/Behaviors) allow us to handle common execution of logic (eg: validation)
       2. Reusable logic through different interfaces. (But don't mediate messages across use cases!!)
       3. Easily perform [branch by abstraction](https://www.martinfowler.com/bliki/BranchByAbstraction.html) from the `Route` if we need to feature flag or scientist logic.
-5. **DbAccess & Domain**
-   * **DbAccess**
-      * Alias for `Data Access`.
-      * `DbAccess` sends its models into the `Domain` as an "in-memory" state and returns the `Domain` for us to interact with
-      * `DbAccess` is the connector/interactor with our repository/ORM, like doing the mapping, saving, retrieval, and deletion on our `Domain` updates
+5. **DataAccess & Domain**
+   * We went for a pragmatic approach here. There's no right and wrong answers on when we need this. If you look at `RetriveRecipe` we reach out to our ORM directly instead of abstracting it within a data access. Yes, if we decide not to use EF, we have to change our code. Either way we have to do that so it is really a moot point. On the other hand if this contrive example becomes a real-world application with multiple use cases sharing the same repository then perhaps we should move it into a broker.
    * **Domain**
-     * ATM we allow the access to the `IQueryable` interface.
+     * ATM we allow the access to the `IQueryable` interface. We aren't really exposing a broker here but an interface that's common to LINQ and c#. The trade-off over semantics is performance.
+     * As well we leverage off the tooling (FluentValidation) to write our business logic.
 
 
 ### Extras
@@ -74,7 +72,7 @@ Through `Routes.cs` we can share that routing name without fluffing around doubl
 
 # DataLayer
 
-We use Entity Framework
+We use Entity Framework. Contains the [Data Access Layer](https://en.wikipedia.org/wiki/Data_access_layer) and migration plan
 
 ### Principles
 
@@ -82,6 +80,6 @@ We use Entity Framework
 * What should be in here is code that describes the schema and structure of our database.
 * It also provides the direct operations on our database such as saving, deleting, etc.
   * ie: the repository patterns or ORMs.
-* A benefit having our database entities placed here is the psychological visual indicator that these
-objects are bound to the database schema and should not be used as our DTO within our application.
-It is a DTO but one that is to view into our database layer.
+* A benefit having our database entities placed here is the psychological visual indicator that these objects are bound to the database schema and should not be used as our DTO within our application.
+
+
