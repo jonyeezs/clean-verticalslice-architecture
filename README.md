@@ -52,6 +52,7 @@ We choose pragmatism over dogmatism. Write code that allows us to read quickly. 
 Some important terms to know when reading this:
 
 * **Layers**: when we mention layers we are talking about layers in a clean architecture sense.
+* **Application**: This is the layer where our business logic resides.
 * **Use Cases**: when we mention use cases we are talking about use cases in a vertical slice concept. Also known as features.
 * **Aggregate root**: the terminology used in Domain Driven Design. Aggregate root is a cluster of associated objects that we treat as a unit for the purpose of data changes.
 

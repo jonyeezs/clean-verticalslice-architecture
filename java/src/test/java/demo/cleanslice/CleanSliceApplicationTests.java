@@ -1,4 +1,4 @@
-package demo.cleanslice.cleanslice;
+package demo.cleanslice;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
