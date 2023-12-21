@@ -5,19 +5,17 @@ namespace CleanSlice.Api.UseCases.CreateRecipe.Domain
 {
     public class RecipeBook
     {
-
-        private readonly IQueryable<DataLayer.Models.Recipe> recipes;
+        private readonly AddRecipeValidator validator;
         public IList<Recipe> Recipes { get; } = new List<Recipe>();
 
-        public RecipeBook(IQueryable<DataLayer.Models.Recipe> recipes)
+        public RecipeBook(Func<string, IEnumerable<Recipe>> getRecipesByTitle)
         {
-            this.recipes = recipes;
+            this.validator = new AddRecipeValidator(getRecipesByTitle);
         }
 
         public void AddRecipe(Recipe recipe)
         {
-            var validator = new AddRecipeValidator(recipes);
-            validator.ValidateAndThrow(recipe);
+            this.validator.ValidateAndThrow(recipe);
 
             Recipes.Add(recipe);
         }
@@ -25,15 +23,15 @@ namespace CleanSlice.Api.UseCases.CreateRecipe.Domain
 
     public class AddRecipeValidator : AbstractValidator<Recipe>, INonInjectableValidator
     {
-        private IQueryable<DataLayer.Models.Recipe> recipes;
+        private Func<string, IEnumerable<Recipe>> getRecipesByTitle;
 
-        public AddRecipeValidator(IQueryable<DataLayer.Models.Recipe> recipes)
+        public AddRecipeValidator(Func<string, IEnumerable<Recipe>> getRecipesByTitle)
         {
-            this.recipes = recipes;
+            this.getRecipesByTitle = getRecipesByTitle;
 
             RuleFor(r => r.Title)
                 .NotEmpty()
-                .Must(title => !this.recipes.Any(r => r.Title.ToUpper() == title.ToUpper()))
+                .Must(title => !this.getRecipesByTitle(title).Any())
                 .WithMessage("Recipe with this title already exists. Try updating instead.");
         }
 
@@ -41,7 +39,7 @@ namespace CleanSlice.Api.UseCases.CreateRecipe.Domain
         // clearly filter Validators with INonInjectableValidator.
         public AddRecipeValidator()
         {
-            this.recipes = Enumerable.Empty<DataLayer.Models.Recipe>().AsQueryable();
+            this.getRecipesByTitle = (_) => Enumerable.Empty<Recipe>();
         }
     }
 

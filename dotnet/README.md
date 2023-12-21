@@ -32,7 +32,8 @@
 5. **DataAccess & Domain**
    * We went for a pragmatic approach here. There's no right and wrong answers on when we need this. If you look at `RetriveRecipe` we reach out to our ORM directly instead of abstracting it within a data access. Yes, if we decide not to use EF, we have to change our code. Either way we have to do that so it is really a moot point. On the other hand if this contrive example becomes a real-world application with multiple use cases sharing the same repository then perhaps we should move it into a broker.
    * **Domain**
-     * ATM we allow the access to the `IQueryable` interface. We aren't really exposing a broker here but an interface that's common to LINQ and c#. The trade-off over semantics is performance.
+     * The coupling between both is noticeable by the mapping between domain and data layer in the DataAccess area. Domain should never have any knowledge whatsover of the data layer's model. On the other hand DataAccess would as the mediator between the two layers.
+     * All data access queries, mutation and interaction should be abstracted from the domain and implemented within the DataAccess area.
      * As well we leverage off the tooling (FluentValidation) to write our business logic.
 
 

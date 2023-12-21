@@ -16,7 +16,7 @@ namespace CleanSlice.Api.UseCases.CreateRecipe
 
         public RecipeBook Retrieve()
         {
-            return new RecipeBook(this.recipeContext.Recipe.AsNoTracking());
+            return new RecipeBook(this.FindRecipeByTitle);
         }
 
 
@@ -34,6 +34,15 @@ namespace CleanSlice.Api.UseCases.CreateRecipe
             await this.recipeContext.SaveChangesAsync(cancellationToken);
 
             return newRecipes.Select(r => (r.Id, r.Title)).ToArray();
+        }
+
+        private IEnumerable<Recipe> FindRecipeByTitle(string title)
+        {
+            return this.recipeContext.Recipe
+            .AsNoTracking()
+            .Where(r => r.Title.ToUpperInvariant().Equals(title.ToUpperInvariant()))
+            .Select(r => new Recipe(r.Title, r.Ingredients.Select(i => new Ingredient(i.Name, 0, "gm")).ToList()))
+            .AsEnumerable<Recipe>();
         }
     }
 }
