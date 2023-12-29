@@ -5,6 +5,8 @@ Clean - to compartment-ize common execution of code in a layered manner.
 
 # Architecture
 
+> Low coupling; high cohesion
+>
 > Folders and namespaces is the first level of understanding how an application works
 >
 > We separate what's shared and what is commonly run amongst all our code
