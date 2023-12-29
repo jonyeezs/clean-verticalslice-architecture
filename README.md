@@ -32,7 +32,8 @@ This is where [Vertical Slice Architecture](https://www.jimmybogard.com/vertical
 
 > Encapsulating and grouping all concerns from front-end to back. Remove the gates and barriers across those layers, and couple along the axis of change.
 
-![Vertical Slice diagram by Jimmy Bogard](https://jimmybogardsblog.blob.core.windows.net/jimmybogardsblog/3/2018/Picture0030.png)
+![Vertical Slice diagram by Jorge Sánchez Fernández](https://github.com/jonyeezs/clean-verticalslice-architecture/assets/10862726/ffec14c6-dc39-4cd0-ae67-0ad58f80c236)
+
 
 Using the principles of clean architecture we integrate the pieces we need to make a feature work and gather them under
 the same umbrella we less ceremonies and abstraction.
