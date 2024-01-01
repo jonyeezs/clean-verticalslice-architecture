@@ -1,6 +1,7 @@
 Uses a combination of Vertical Slice and Clean architecture.
 
 Vertical Slice - to structure all logic of a use case.
+
 Clean - to compartment-ize common execution of code in a layered manner.
 
 # Architecture
@@ -40,7 +41,11 @@ the same umbrella we less ceremonies and abstraction.
 
 Talking about abstractions - because our code is now strongly cohesive and decoupled from the concerns of other features, we can remove all the abstractions such as dto or adaptor services.
 
-We choose pragmatism over dogmatism. Write code that allows us to read quickly. Less code to manage. Lower jumping around. Add abstraction only when it stops us from extending our code sanely.
+We choose pragmatism over dogmatism. Write code that allows us to read quickly. Less code to manage. Minimal jumping around. Add abstract only when it stops us from extending our code sanely.
+
+> _Some thoughts on when to abstract_:
+>  1. When we are continuously making the same change in different use cases, abstract the coupled behaviour into a common service.
+>  2. When part of the code is worked by someone else, we can split that out so that we can work in parallel. The "black box" effect provided by abstraction helps developers work in isolation through its ubiquitous API.
 
 ## Glossary
 
@@ -73,7 +78,6 @@ _Do note from one language to another the structures may look slightly different
 * All business logic (user interface, DTOs, validations, persistent interaction, business domain smarts, and responses) are all in the same namespace and folder.
 * All code to be isolated to its own use case so that when it is refactored or tempered it will not affect another use case.
   * This may feel like a smell once you see duplicate code all over the place - that's fine; [We focus on the right abstraction rather than DRY-all-the-things](https://youtu.be/8bZh5LMaSmE?t=891)
-  * If we find we are continuously making the same changes in different use cases, we can abstract the coupled behaviour into a common service.
 * Each use case can work differently (ie one may be a http only endpoint another could be a messagint endpoint)
 
 ## Concepts
