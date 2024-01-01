@@ -73,6 +73,7 @@ _Do note from one language to another the structures may look slightly different
 * All business logic (user interface, DTOs, validations, persistent interaction, business domain smarts, and responses) are all in the same namespace and folder.
 * All code to be isolated to its own use case so that when it is refactored or tempered it will not affect another use case.
   * This may feel like a smell once you see duplicate code all over the place - that's fine; [We focus on the right abstraction rather than DRY-all-the-things](https://youtu.be/8bZh5LMaSmE?t=891)
+  * If we find we are continuously making the same changes in different use cases, we can abstract the coupled behaviour into a common service.
 * Each use case can work differently (ie one may be a http only endpoint another could be a messagint endpoint)
 
 ## Concepts
@@ -144,6 +145,12 @@ Through dependency injection, they can be used by the inner layer that resides i
 
 Think of it this way, if we remove this code does it impede the essence and goal of our use case?
 
+Such code would be:
+* logging
+* authorization and authentication breakdowns
+* atomic transaction commits
+* general request enrichment
+* system-wide mandates (such as auditing or event publishing)
 
 # CICD
 
