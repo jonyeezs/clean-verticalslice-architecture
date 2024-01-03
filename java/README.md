@@ -26,6 +26,7 @@ Each use case will be in its own package/namespace.
    * We still want to separate the presentation layer from our application layer.
    * We keep this as bare minimum as possible.
    * Logic is mediated through a basic service
-2. **Service**
-   * This is a cheap mediator class we can use.
-   * TODO: move to something like https://github.com/sizovs/PipelinR
+2. **Handler**
+   * This is a cheap mediator class as as service.
+     * _TODO: move to something like https://github.com/sizovs/PipelinR_
+     * 
