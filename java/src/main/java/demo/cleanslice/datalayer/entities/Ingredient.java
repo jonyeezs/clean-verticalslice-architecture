@@ -1,4 +1,4 @@
-package demo.datalayer.model;
+package demo.cleanslice.datalayer.entities;
 
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
@@ -6,15 +6,15 @@ import com.j256.ormlite.table.DatabaseTable;
 @DatabaseTable(tableName = "Ingredient")
 public class Ingredient extends BaseModel {
     @DatabaseField(generatedId = true)
-    private int id;
+    private Long id;
 
     @DatabaseField(canBeNull = true)
     private String name;
 
     @DatabaseField(foreign = true, foreignAutoRefresh = true)
-    private Recipe recipe;
+    public Recipe recipe;
 
-    public Ingredient() {
-
+    public Ingredient(String name) {
+        this.name = name;
     }
 }
