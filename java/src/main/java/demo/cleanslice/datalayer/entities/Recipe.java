@@ -1,4 +1,4 @@
-package demo.datalayer.model;
+package demo.cleanslice.datalayer.entities;
 
 import java.util.Collection;
 import java.util.UUID;
@@ -18,5 +18,5 @@ public class Recipe extends BaseModel {
     public String title;
 
     @ForeignCollectionField(eager = false)
-    private Collection<Ingredient> ingredients;
+    public Collection<Ingredient> ingredients;
 }

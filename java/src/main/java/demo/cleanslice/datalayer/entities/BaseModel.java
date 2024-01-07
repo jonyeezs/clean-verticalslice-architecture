@@ -1,4 +1,4 @@
-package demo.datalayer.model;
+package demo.cleanslice.datalayer.entities;
 
 import java.util.Date;
 
