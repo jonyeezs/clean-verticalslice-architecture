@@ -12,7 +12,7 @@ import com.j256.ormlite.table.DatabaseTable;
 public class Recipe extends BaseModel {
 
     @DatabaseField(dataType = DataType.UUID_NATIVE, generatedId = true, readOnly = true)
-    private UUID id;
+    public UUID id;
 
     @DatabaseField(canBeNull = true)
     public String title;
