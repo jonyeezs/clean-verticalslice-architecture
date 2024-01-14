@@ -5,12 +5,14 @@ import java.sql.SQLException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
 
 import com.j256.ormlite.jdbc.JdbcConnectionSource;
 import com.j256.ormlite.support.ConnectionSource;
 
 @Configuration
-public class DBConfiguration {
+@PropertySource("classpath:application.properties")
+public class DBConfig {
 
     @Value("${database.connectionstring}")
     private String databaseUrl;
@@ -22,7 +24,7 @@ public class DBConfiguration {
     private String databasePassword;
 
     @Bean
-    public ConnectionSource connectionSource() throws SQLException {
+    ConnectionSource connectionSource() throws SQLException {
         return new JdbcConnectionSource(databaseUrl, databaseUsername, databasePassword);
     }
 }

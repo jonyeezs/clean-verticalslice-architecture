@@ -17,4 +17,7 @@ public class Ingredient extends BaseModel {
     public Ingredient(String name) {
         this.name = name;
     }
+
+    public Ingredient() {
+    }
 }

@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
 
+import javax.validation.constraints.NotBlank;
+
 import lombok.Data;
 
 public class RecipeBookDomain {
@@ -27,6 +29,8 @@ public class RecipeBookDomain {
 
 @Data
 class Recipe {
+
+    @NotBlank(message = "Title of the recipe is required")
     private final String title;
     private final Ingredient[] ingredients;
 }

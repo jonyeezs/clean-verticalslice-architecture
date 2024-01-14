@@ -3,6 +3,7 @@ package demo.cleanslice.usecases.create_recipe;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -17,13 +18,13 @@ public class PostController {
     }
 
     @PostMapping("")
-    public ResponseEntity<Response> create(Request request) throws Exception {
+    public ResponseEntity<Response> create(@RequestBody Request request) throws Exception {
         try {
             var response = mediator.handle(request);
             return ResponseEntity.status(HttpStatus.CREATED).body(response);
 
         } catch (RecipeExistsException e) {
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.unprocessableEntity().build();
         }
     }
 
