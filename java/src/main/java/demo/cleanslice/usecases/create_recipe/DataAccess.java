@@ -3,13 +3,13 @@ package demo.cleanslice.usecases.create_recipe;
 import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
+
+import com.j256.ormlite.field.types.UuidType;
 
 import demo.cleanslice.datalayer.RecipeDao;
 
@@ -45,6 +45,7 @@ public class DataAccess implements demo.cleanslice.common.DataAccess<RecipeBookD
                 .map(r -> {
                     var recipe = new demo.cleanslice.datalayer.entities.Recipe();
                     recipe.title = r.getTitle();
+                    recipe.id = UUID.randomUUID();
                     recipe.ingredients = Arrays.asList(r.getIngredients()).stream()
                             .map(i -> new demo.cleanslice.datalayer.entities.Ingredient(i.getName())).toList();
                     return recipe;

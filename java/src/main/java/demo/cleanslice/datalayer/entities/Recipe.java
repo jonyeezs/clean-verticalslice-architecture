@@ -11,7 +11,7 @@ import com.j256.ormlite.table.DatabaseTable;
 @DatabaseTable(tableName = "Recipe")
 public class Recipe extends BaseModel {
 
-    @DatabaseField(dataType = DataType.UUID_NATIVE, generatedId = true, readOnly = true)
+    @DatabaseField(dataType = DataType.UUID_NATIVE, generatedId = true)
     public UUID id;
 
     @DatabaseField(canBeNull = true)

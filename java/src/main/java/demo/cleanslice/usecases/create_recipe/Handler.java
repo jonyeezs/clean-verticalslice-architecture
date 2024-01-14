@@ -23,6 +23,6 @@ public class Handler {
 
         var updatedDomain = this.dataAccess.Add(domain);
 
-        return new Response(updatedDomain.getFirst());
+        return new Response(updatedDomain.get(0));
     }
 }
