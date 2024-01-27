@@ -1,7 +1,7 @@
 version: '3.8'
 services:
   seq:
-    container_name: dotnetarchitecture_seq
+    container_name: cleanslice_seq
     image: datalust/seq:latest
     ports:
       - 80:80
@@ -9,22 +9,21 @@ services:
     environment:
       ACCEPT_EULA: Y
     networks:
-      - dotnetarchitecture
+      - cleanslice
   postgres:
-    container_name: dotnetarchitecture_postgres
+    container_name: cleanslice_postgres
     image: postgres
     env_file:
       - .env
-
     volumes:
       - postgres:/data/postgres
     ports:
-      - "5432:5432"
+      - '5432:5432'
     networks:
-      - dotnetarchitecture
+      - cleanslice
     restart: unless-stopped
 networks:
-  dotnetarchitecture:
+  cleanslice:
     driver: bridge
 volumes:
   postgres:
