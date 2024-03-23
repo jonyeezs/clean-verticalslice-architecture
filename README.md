@@ -77,7 +77,7 @@ _Do note from one language to another the structures may look slightly different
 * All work are co-located to ease navigation between code and understandable at a glance.
 * All business logic (user interface, DTOs, validations, persistent interaction, business domain smarts, and responses) are all in the same namespace and folder.
 * All code to be isolated to its own use case so that when it is refactored or tempered it will not affect another use case.
-  * This may feel like a smell once you see duplicate code all over the place - that's fine; [We focus on the right abstraction rather than DRY-all-the-things](https://youtu.be/8bZh5LMaSmE?t=891)
+  * This may feel like a smell once you see duplicate code all over the place - that's fine; [We focus on the right abstraction rather than DRY-all-the-things](https://youtu.be/8bZh5LMaSmE?si=eY1WecZI9DuoA1Vn&t=815)
 * Each use case can work differently (ie one may be a http only endpoint another could be a messagint endpoint)
 
 ## Concepts
