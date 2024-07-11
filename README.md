@@ -37,7 +37,7 @@ This is where [Vertical Slice Architecture](https://www.jimmybogard.com/vertical
 
 
 Using the principles of clean architecture we integrate the pieces we need to make a feature work and gather them under
-the same umbrella we less ceremonies and abstraction.
+the same umbrella with less ceremonies and abstraction.
 
 Talking about abstractions - because our code is now strongly cohesive and decoupled from the concerns of other features, we can remove all the abstractions such as dto or adaptor services.
 
