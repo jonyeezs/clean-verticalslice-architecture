@@ -36,7 +36,7 @@ This is where [Vertical Slice Architecture](https://www.jimmybogard.com/vertical
 Vertical slice shifts our mindset to focusing on the domain space than technical challenges. It puts the use cases first and foremost which is evident by the way we structure and present code.
 
 > Businesses regularly put too much effort into developing glorified database table editors.. CRUD systems can't produce a refined business model by only capturing data.
-- _Implementing Domain-Driven Design, pg. 172-172
+- _Implementing Domain-Driven Design, pg. 172-172_
 
 ![Vertical Slice diagram by Jorge Sánchez Fernández](https://github.com/jonyeezs/clean-verticalslice-architecture/assets/10862726/ffec14c6-dc39-4cd0-ae67-0ad58f80c236)
 
