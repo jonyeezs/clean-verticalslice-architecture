@@ -1,4 +1,3 @@
 {
-  "cSpell.words": ["Behaviour", "Behaviours", "Npgsql"],
-  "dotnet.defaultSolution": "/dotnet/DotNetArchitecture.sln"
+  "java.debug.settings.onBuildFailureProceed": true
 }
