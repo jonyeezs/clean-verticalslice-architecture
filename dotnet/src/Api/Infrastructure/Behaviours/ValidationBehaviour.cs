@@ -9,9 +9,8 @@ namespace CleanSlice.Api.Infrastructure.Behaviours
         private readonly IEnumerable<IValidator<TRequest>> _validators;
         private readonly ILogger _logger;
 
-        public ValidationBehaviour(IEnumerable<IValidator<TRequest>> validators, ILogger Logger, IValidator<TRequest> validator)
+        public ValidationBehaviour(IEnumerable<IValidator<TRequest>> validators, ILogger Logger)
         {
-            var val = validator;
             _validators = validators;
             _logger = Logger;
         }
@@ -20,8 +19,6 @@ namespace CleanSlice.Api.Infrastructure.Behaviours
         {
             if (_validators.Any())
             {
-                _logger.Information("Validating request {Request}", typeof(TRequest).Name);
-
                 ValidationContext<TRequest> context = new(request);
 
                 FluentValidation.Results.ValidationResult[] validationResults = await Task.WhenAll(_validators
@@ -39,7 +36,7 @@ namespace CleanSlice.Api.Infrastructure.Behaviours
                 }
             }
 
-            _logger.Information("Successful Request {Request}", typeof(TResponse).Name);
+            _logger.Information("Successful validated request {Request}", typeof(TResponse).Name);
 
             return await next();
         }
