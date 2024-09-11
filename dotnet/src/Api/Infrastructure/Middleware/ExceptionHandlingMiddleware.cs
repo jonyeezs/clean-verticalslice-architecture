@@ -50,7 +50,6 @@ namespace CleanSlice.Api.Infrastructure.Middleware
             ErrorResponse response = new()
             {
                 Title = GetTitle(exception),
-                Status = statusCode,
                 Detail = statusCode == StatusCodes.Status500InternalServerError ? "An error occurred and we're working hard to get this working for you again" : exception.Message,
                 Errors = statusCode == StatusCodes.Status500InternalServerError ? new Dictionary<string, string[]>() : GetErrors(exception)
             };

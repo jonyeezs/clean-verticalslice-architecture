@@ -59,12 +59,12 @@ builder.Services.AddMediatR(cfg =>
     _ = cfg.AddOpenBehavior(typeof(TransactionBehaviour<,>));
 });
 
-// Add all implementation of available IDbAccess
+// Add all implementation of available IDataAccess
 foreach (var t in Assembly.GetExecutingAssembly().GetTypes()
     .Where(c => !c.IsInterface
-        && c.GetInterfaces().Any(x => x.IsGenericType && x.GetGenericTypeDefinition() == typeof(IDbAccess<,>))))
+        && c.GetInterfaces().Any(x => x.IsGenericType && x.GetGenericTypeDefinition() == typeof(IDataAccess<,>))))
 {
-    var genericInterface = t.GetInterfaces().First(x => x.GetGenericTypeDefinition() == typeof(IDbAccess<,>));
+    var genericInterface = t.GetInterfaces().First(x => x.GetGenericTypeDefinition() == typeof(IDataAccess<,>));
     builder.Services.AddScoped(genericInterface, t);
 }
 
