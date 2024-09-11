@@ -8,13 +8,13 @@ using CleanSlice.Api.Infrastructure.Middleware;
 using CleanSlice.Api.Infrastructure.Swagger;
 using DataLayer;
 using FluentValidation;
-using MediatR;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using Serilog;
-
-const string RecipeConnectionStringSettingName = "Recipe";
-
 
 Log.Logger = new LoggerConfiguration()
     .WriteTo.Console()
@@ -24,7 +24,7 @@ Log.Information("Starting up");
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddDbContext<RecipeContext>((opts) => opts.UseNpgsql(builder.Configuration.GetConnectionString(RecipeConnectionStringSettingName)));
+builder.Services.AddDbContext<RecipeContext>((opts) => opts.UseNpgsql(builder.Configuration.GetConnectionString("Recipe")));
 
 builder.Services.AddHealthChecks();
 builder.Services.AddEndpointsApiExplorer();
@@ -68,7 +68,6 @@ foreach (var t in Assembly.GetExecutingAssembly().GetTypes()
     builder.Services.AddScoped(genericInterface, t);
 }
 
-
 builder.Services.AddTransient<ExceptionHandlingMiddleware>();
 
 builder.Services.AddValidatorsFromAssemblyContaining<Program>(ServiceLifetime.Scoped,
@@ -77,17 +76,17 @@ builder.Services.AddValidatorsFromAssemblyContaining<Program>(ServiceLifetime.Sc
 //
 WebApplication app = builder.Build();
 
+// Configure the HTTP request pipeline.
+app.UseMiddleware<ExceptionHandlingMiddleware>();
+
 app.MapHealthChecks("/health");
 
 app.UseSerilogRequestLogging();
 
-// Configure the HTTP request pipeline.
-app.UseMiddleware<ExceptionHandlingMiddleware>();
-
 if (app.Environment.IsDevelopment())
 {
-    _ = app.UseSwagger();
-    _ = app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Api v1"));
+    app.UseSwagger();
+    app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Api v1"));
 }
 
 
