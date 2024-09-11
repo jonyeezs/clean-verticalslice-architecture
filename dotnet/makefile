@@ -16,6 +16,12 @@ clean:
 restore:
 	dotnet restore
 
+run:
+	docker-compose up -d
+# yet to figure out how to use th certs
+	dotnet dev-certs https --trust
+	dotnet watch --project src/Api/Api.csproj -lp local
+
 build:
     # There's an issue with rosalyn running in the background
     # the recommended workaround doesn't work for me. Unfortunately doesn't seem to be fixed yet

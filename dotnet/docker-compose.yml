@@ -4,7 +4,7 @@ services:
     container_name: dotnetarchitecture_seq
     image: datalust/seq:latest
     ports:
-      - 80:80
+      - 80:80 # url to seq
       - 5341:5341
     environment:
       ACCEPT_EULA: Y
@@ -19,7 +19,7 @@ services:
     volumes:
       - postgres:/data/postgres
     ports:
-      - "5432:5432"
+      - '5432:5432'
     networks:
       - dotnetarchitecture
     restart: unless-stopped

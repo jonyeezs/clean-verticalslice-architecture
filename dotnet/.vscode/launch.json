@@ -1,0 +1,25 @@
+{
+  // Use IntelliSense to learn about possible attributes.
+  // Hover to view descriptions of existing attributes.
+  // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Debug Make Run",
+      "type": "coreclr",
+      "request": "attach",
+      "processName": "Api"
+    },
+    {
+      "name": ".NET Core Launch (console)",
+      "type": "coreclr",
+      "request": "launch",
+      "preLaunchTask": "build",
+      "program": "${workspaceFolder}/tests/bin/Debug/net7/Tests.dll",
+      "args": [],
+      "cwd": "${workspaceFolder}/tests",
+      "console": "internalConsole",
+      "stopAtEntry": false
+    }
+  ]
+}
