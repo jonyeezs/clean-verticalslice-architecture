@@ -1,6 +1,7 @@
 using CleanSlice.Api.Common.DTOs;
 using CleanSlice.Api.Common.Exceptions;
 using FluentValidation;
+using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using ILogger = Serilog.ILogger;
@@ -38,47 +39,74 @@ namespace CleanSlice.Api.Infrastructure.Middleware
                     _logger.Warning(exception, "Error handling {RequestMethod} {RequestUrl}", context.Request.Method, context.Request.Path);
                     break;
                 default:
-                    _logger.Error(exception, "Error handling  {RequestMethod} {RequestUrl}", context.Request.Method, context.Request.Path);
+                    _logger.Error(exception, "Error handling {RequestMethod} {RequestUrl}", context.Request.Method, context.Request.Path);
                     break;
             };
         }
 
-        private static async Task HandleException(HttpContext httpContext, Exception exception)
+        private async Task HandleException(HttpContext httpContext, Exception exception)
         {
             int statusCode = GetStatusCode(exception);
 
             ErrorResponse response = new()
             {
                 Title = GetTitle(exception),
-                Detail = statusCode == StatusCodes.Status500InternalServerError ? "An error occurred and we're working hard to get this working for you again" : exception.Message,
-                Errors = statusCode == StatusCodes.Status500InternalServerError ? new Dictionary<string, string[]>() : GetErrors(exception)
+                Details = statusCode == StatusCodes.Status500InternalServerError ? new Dictionary<string, string[]>() : GetErrors(exception)
             };
-
-            httpContext.Response.ContentType = "application/json";
-
-            httpContext.Response.StatusCode = statusCode;
-
-            await httpContext.Response.WriteAsync(JsonConvert.SerializeObject(response, new JsonSerializerSettings
+            var jsonResponse = JsonConvert.SerializeObject(response, new JsonSerializerSettings
             {
                 ContractResolver = new DefaultContractResolver
                 {
                     NamingStrategy = new CamelCaseNamingStrategy()
                 }
-            }));
+            });
+
+            httpContext.Response.ContentType = "application/json";
+
+            httpContext.Response.StatusCode = statusCode;
+
+            await WrapContextResponseForModifying(httpContext, async (resp) =>
+            {
+                var stream = resp.Body;
+                stream.SetLength(0);
+                using var writer = new StreamWriter(stream, leaveOpen: true);
+                await writer.WriteAsync(jsonResponse);
+                await writer.FlushAsync();
+                resp.ContentLength = stream.Length;
+            });
         }
 
-        private static string GetTitle(Exception exception)
+        /// <summary>
+        /// Creates a temporary memory stream so we can write into the response otherwise the context stream does not support it.
+        /// </summary>
+        /// <param name="context">the HttpContext containing the response</param>
+        /// <param name="modifyingInstructions"></param>
+        /// <returns></returns>
+        private async Task WrapContextResponseForModifying(HttpContext context, Func<HttpResponse, Task> modifyingInstructions)
+        {
+            var originBody = context.Response.Body;
+            var responseBody = new MemoryStream();
+            context.Response.Body = responseBody;
+
+            await modifyingInstructions.Invoke(context.Response);
+
+            responseBody.Seek(0, SeekOrigin.Begin);
+            await responseBody.CopyToAsync(originBody);
+            context.Response.Body = originBody;
+        }
+
+        private string GetTitle(Exception exception)
         {
             return exception switch
             {
                 ApiException apie => apie.Message,
-                ValidationException ve => ve.Message,
+                ValidationException ve => "Validation error. Please check your request again.",
                 BadHttpRequestException ve => "Bad request made. Please check your request again.",
-                _ => "Server Error"
+                _ => "An error occurred and we're working hard to get this working for you again"
             };
         }
 
-        private static int GetStatusCode(Exception exception)
+        private int GetStatusCode(Exception exception)
         {
             return exception switch
             {
@@ -90,7 +118,7 @@ namespace CleanSlice.Api.Infrastructure.Middleware
             };
         }
 
-        private static IReadOnlyDictionary<string, string[]> GetErrors(Exception exception)
+        private IReadOnlyDictionary<string, string[]> GetErrors(Exception exception)
         {
             Dictionary<string, string[]> dict = new();
             if (exception == null)
