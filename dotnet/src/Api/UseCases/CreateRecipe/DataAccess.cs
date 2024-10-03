@@ -20,7 +20,7 @@ namespace CleanSlice.Api.UseCases.CreateRecipe
         }
 
 
-        public async Task<IList<(Guid Id, string Title)>> AddAsync(RecipeBook domain, CancellationToken cancellationToken)
+        public async Task<IList<(Guid Id, string Title)>> SaveAsync(RecipeBook domain, CancellationToken cancellationToken)
         {
             var newRecipes = domain.Recipes
             .Select(r => new DataLayer.Models.Recipe

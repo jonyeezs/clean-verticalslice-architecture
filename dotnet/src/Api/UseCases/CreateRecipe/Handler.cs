@@ -17,7 +17,7 @@ namespace CleanSlice.Api.UseCases.CreateRecipe
             var recipeBook = this.dataAccess.Retrieve();
             recipeBook.AddRecipe(new Recipe(request.Title, Array.Empty<Ingredient>()));
 
-            var result = await this.dataAccess.AddAsync(recipeBook, cancellationToken);
+            var result = await this.dataAccess.SaveAsync(recipeBook, cancellationToken);
             return new CreateRecipeResponse(result.First().Id);
         }
     }

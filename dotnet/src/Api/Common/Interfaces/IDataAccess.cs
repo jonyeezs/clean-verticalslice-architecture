@@ -4,6 +4,6 @@ namespace CleanSlice.Api.Common.Interfaces
     {
         TDomain Retrieve();
 
-        Task<TAggregateRoot> AddAsync(TDomain domain, CancellationToken cancellationToken);
+        Task<TAggregateRoot> SaveAsync(TDomain domain, CancellationToken cancellationToken);
     }
 }
