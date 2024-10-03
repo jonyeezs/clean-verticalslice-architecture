@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CleanSlice.Api.UseCases.CreateRecipe
 {
-    public class DataAccess : IDataAccess<RecipeBook, IList<(Guid Id, string Title)>>
+    public class DataAccess : IDataAccess<CreateRecipeRequest, RecipeBook, IList<(Guid Id, string Title)>>
     {
         private readonly RecipeContext recipeContext;
 
@@ -14,9 +14,9 @@ namespace CleanSlice.Api.UseCases.CreateRecipe
             this.recipeContext = recipeContext;
         }
 
-        public RecipeBook Retrieve()
+        public async Task<RecipeBook> RetrieveAsync(CreateRecipeRequest context, CancellationToken cancellationToken)
         {
-            return new RecipeBook(this.FindRecipeByTitle);
+            return new RecipeBook(await this.FindRecipeByTitle(context.Title, cancellationToken));
         }
 
 
@@ -36,13 +36,13 @@ namespace CleanSlice.Api.UseCases.CreateRecipe
             return newRecipes.Select(r => (r.Id, r.Title)).ToArray();
         }
 
-        private IEnumerable<Recipe> FindRecipeByTitle(string title)
+        private async Task<IEnumerable<Recipe>> FindRecipeByTitle(string title, CancellationToken cancellationToken)
         {
-            return this.recipeContext.Recipe
+            return await this.recipeContext.Recipe
             .AsNoTracking()
             .Where(r => r.Title.ToLower().Equals(title.ToLower()))
             .Select(r => new Recipe(r.Title, r.Ingredients.Select(i => new Ingredient(i.Name, 0, "gm")).ToList()))
-            .AsEnumerable<Recipe>();
+            .ToListAsync(cancellationToken);
         }
     }
 }

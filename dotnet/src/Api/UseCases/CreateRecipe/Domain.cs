@@ -8,9 +8,9 @@ namespace CleanSlice.Api.UseCases.CreateRecipe.Domain
         private readonly AddRecipeValidator validator;
         public IList<Recipe> Recipes { get; } = new List<Recipe>();
 
-        public RecipeBook(Func<string, IEnumerable<Recipe>> getRecipesByTitle)
+        public RecipeBook(IEnumerable<Recipe> recipesOfMatchingTitle)
         {
-            this.validator = new AddRecipeValidator(getRecipesByTitle);
+            this.validator = new AddRecipeValidator(recipesOfMatchingTitle);
         }
 
         public void AddRecipe(Recipe recipe)
@@ -23,23 +23,12 @@ namespace CleanSlice.Api.UseCases.CreateRecipe.Domain
 
     public class AddRecipeValidator : AbstractValidator<Recipe>, INonInjectableValidator
     {
-        private Func<string, IEnumerable<Recipe>> getRecipesByTitle;
-
-        public AddRecipeValidator(Func<string, IEnumerable<Recipe>> getRecipesByTitle)
+        public AddRecipeValidator(IEnumerable<Recipe> recipesOfMatchingTitle)
         {
-            this.getRecipesByTitle = getRecipesByTitle;
-
             RuleFor(r => r.Title)
                 .NotEmpty()
-                .Must(title => !this.getRecipesByTitle(title).Any())
+                .Must(title => !recipesOfMatchingTitle.Any())
                 .WithMessage("Recipe with this title already exists. Try updating instead.");
-        }
-
-        // Need to add this. For some reason the IoC is still trying to resolve this when we have
-        // clearly filter Validators with INonInjectableValidator.
-        public AddRecipeValidator()
-        {
-            this.getRecipesByTitle = (_) => Enumerable.Empty<Recipe>();
         }
     }
 

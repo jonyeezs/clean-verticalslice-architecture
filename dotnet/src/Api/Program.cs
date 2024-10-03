@@ -29,7 +29,6 @@ builder.Services.AddDbContext<RecipeContext>((opts) => opts.UseNpgsql(builder.Co
 builder.Services.AddHealthChecks();
 builder.Services.AddEndpointsApiExplorer();
 builder.Host.UseSerilog((ctx, lc) => lc
-    .WriteTo.Console()
     .ReadFrom.Configuration(ctx.Configuration));
 
 builder.Services.AddSwaggerGen(c =>
@@ -62,9 +61,9 @@ builder.Services.AddMediatR(cfg =>
 // Add all implementation of available IDataAccess
 foreach (var t in Assembly.GetExecutingAssembly().GetTypes()
     .Where(c => !c.IsInterface
-        && c.GetInterfaces().Any(x => x.IsGenericType && x.GetGenericTypeDefinition() == typeof(IDataAccess<,>))))
+        && c.GetInterfaces().Any(x => x.IsGenericType && x.GetGenericTypeDefinition() == typeof(IDataAccess<,,>))))
 {
-    var genericInterface = t.GetInterfaces().First(x => x.GetGenericTypeDefinition() == typeof(IDataAccess<,>));
+    var genericInterface = t.GetInterfaces().First(x => x.GetGenericTypeDefinition() == typeof(IDataAccess<,,>));
     builder.Services.AddScoped(genericInterface, t);
 }
 
