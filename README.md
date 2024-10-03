@@ -117,7 +117,7 @@ _Do note from one language to another the structures may look slightly different
       * Here we can piece together the aggregates that we need to form our domain.
         * Think about it as our [Aggregate factory](https://medium.com/withbetterco/using-aggregates-and-factories-in-domain-driven-design-34e0dff220c3#ac00) or [Repository](https://www.abrahamberg.com/blog/repository-pattern-in-ddd-bridging-the-domain-and-data-models/).
       * The data access should generate our domain and understand how to update our persistent layer with the mutated domain.
-      * If data must be accessible within the Domain, due to the nature on how an external API interacts with the state change, we can use delegate lambdas to abstract just that interaction. (_See [this post written in ruby](https://blog.arkency.com/ultimate-guide-to-3rd-party-calls-from-your-aggregate/) but explains it well_)
+      * If data must be accessible within the Domain, due to the nature on how an external API interacts with the state change, we can use delegate lambdas to abstract just that interaction. (_See [this post](https://blog.arkency.com/ultimate-guide-to-3rd-party-calls-from-your-aggregate/);although written in Ruby it does a good job explaining this concept_)
    * **Domain**
      * `Domain` is our aggregate root for this use case
      * In the Clean Architecture this would be the `entity`.
