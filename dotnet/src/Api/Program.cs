@@ -75,12 +75,11 @@ builder.Services.AddValidatorsFromAssemblyContaining<Program>(ServiceLifetime.Sc
 //
 WebApplication app = builder.Build();
 
-// Configure the HTTP request pipeline.
-app.UseMiddleware<ExceptionHandlingMiddleware>();
-
 app.MapHealthChecks("/health");
 
+// Configure the HTTP request pipeline.
 app.UseSerilogRequestLogging();
+app.UseMiddleware<ExceptionHandlingMiddleware>();
 
 if (app.Environment.IsDevelopment())
 {
