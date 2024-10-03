@@ -40,7 +40,7 @@ namespace CleanSlice.Api.UseCases.CreateRecipe
         {
             return this.recipeContext.Recipe
             .AsNoTracking()
-            .Where(r => r.Title.ToUpperInvariant().Equals(title.ToUpperInvariant()))
+            .Where(r => r.Title.ToLower().Equals(title.ToLower()))
             .Select(r => new Recipe(r.Title, r.Ingredients.Select(i => new Ingredient(i.Name, 0, "gm")).ToList()))
             .AsEnumerable<Recipe>();
         }
