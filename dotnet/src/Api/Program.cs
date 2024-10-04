@@ -9,11 +9,7 @@ using CleanSlice.Api.Infrastructure.Middleware;
 using CleanSlice.Api.Infrastructure.Swagger;
 using DataLayer;
 using FluentValidation;
-using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using Serilog;
 
@@ -49,7 +45,11 @@ builder.Services.AddSwaggerGen(c =>
     c.DocumentFilter<JsonPatchDocumentFilter>();
 });
 
-builder.Services.AddCarter(configurator: c => _ = c.WithResponseNegotiator<NewtonsoftJsonResponseNegotiator>());
+builder.Services.AddCarter(configurator: c =>
+    c.WithResponseNegotiator<NewtonsoftJsonResponseNegotiator>()
+    // I'll manage validators from Mediatr
+    .WithEmptyValidators()
+);
 
 builder.Services.AddMediatR(cfg =>
 {
