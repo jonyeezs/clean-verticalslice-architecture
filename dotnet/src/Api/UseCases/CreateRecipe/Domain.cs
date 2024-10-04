@@ -8,14 +8,14 @@ namespace CleanSlice.Api.UseCases.CreateRecipe.Domain
         private readonly AddRecipeValidator validator;
         public IList<Recipe> Recipes { get; } = new List<Recipe>();
 
-        public RecipeBook(IEnumerable<Recipe> recipesOfMatchingTitle)
+        public RecipeBook(Func<string, CancellationToken, Task<IEnumerable<Recipe>>> recipesOfMatchingTitle)
         {
             this.validator = new AddRecipeValidator(recipesOfMatchingTitle);
         }
 
-        public void AddRecipe(Recipe recipe)
+        public async Task AddRecipeAsync(Recipe recipe)
         {
-            this.validator.ValidateAndThrow(recipe);
+            await this.validator.ValidateAndThrowAsync(recipe);
 
             Recipes.Add(recipe);
         }
@@ -23,11 +23,18 @@ namespace CleanSlice.Api.UseCases.CreateRecipe.Domain
 
     public class AddRecipeValidator : AbstractValidator<Recipe>, INonInjectableValidator
     {
-        public AddRecipeValidator(IEnumerable<Recipe> recipesOfMatchingTitle)
+        Func<string, CancellationToken, Task<IEnumerable<Recipe>>> _recipesOfMatchingTitle;
+        public AddRecipeValidator(Func<string, CancellationToken, Task<IEnumerable<Recipe>>> recipesOfMatchingTitle)
         {
+            _recipesOfMatchingTitle = recipesOfMatchingTitle;
+
             RuleFor(r => r.Title)
                 .NotEmpty()
-                .Must(title => !recipesOfMatchingTitle.Any())
+                .MustAsync(async (title, cancellationToken) =>
+                {
+                    var recipes = await _recipesOfMatchingTitle.Invoke(title, cancellationToken);
+                    return !recipes.Any();
+                })
                 .WithMessage("Recipe with this title already exists. Try updating instead.");
         }
     }

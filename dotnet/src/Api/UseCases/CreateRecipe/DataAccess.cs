@@ -14,9 +14,9 @@ namespace CleanSlice.Api.UseCases.CreateRecipe
             this.recipeContext = recipeContext;
         }
 
-        public async Task<RecipeBook> RetrieveAsync(CreateRecipeRequest context, CancellationToken cancellationToken)
+        public Task<RecipeBook> RetrieveAsync(CreateRecipeRequest context, CancellationToken cancellationToken)
         {
-            return new RecipeBook(await this.FindRecipeByTitle(context.Title, cancellationToken));
+            return Task.FromResult(new RecipeBook(this.FindRecipeByTitle));
         }
 
 

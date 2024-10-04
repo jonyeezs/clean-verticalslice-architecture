@@ -15,7 +15,7 @@ namespace CleanSlice.Api.UseCases.CreateRecipe
         public async Task<CreateRecipeResponse> Handle(CreateRecipeRequest request, CancellationToken cancellationToken)
         {
             var recipeBook = await this.dataAccess.RetrieveAsync(request, cancellationToken);
-            recipeBook.AddRecipe(new Recipe(request.Title, Array.Empty<Ingredient>()));
+            await recipeBook.AddRecipeAsync(new Recipe(request.Title, Array.Empty<Ingredient>()));
 
             var result = await this.dataAccess.SaveAsync(recipeBook, cancellationToken);
             return new CreateRecipeResponse(result.First().Id);
