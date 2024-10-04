@@ -1,4 +1,4 @@
-using CleanSlice.Api.Common.Interfaces;
+using CleanSlice.Api.Common.Attributes;
 using FluentValidation;
 
 namespace CleanSlice.Api.UseCases.CreateRecipe.Domain
@@ -21,7 +21,8 @@ namespace CleanSlice.Api.UseCases.CreateRecipe.Domain
         }
     }
 
-    public class AddRecipeValidator : AbstractValidator<Recipe>, INonInjectableValidator
+    [NonInjectableValidator]
+    public class AddRecipeValidator : AbstractValidator<Recipe>
     {
         Func<string, CancellationToken, Task<IEnumerable<Recipe>>> _recipesOfMatchingTitle;
         public AddRecipeValidator(Func<string, CancellationToken, Task<IEnumerable<Recipe>>> recipesOfMatchingTitle)

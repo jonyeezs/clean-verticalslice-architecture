@@ -2,6 +2,7 @@ using System.Reflection;
 using Carter;
 using Carter.OpenApi;
 using Carter.ResponseNegotiators.Newtonsoft;
+using CleanSlice.Api.Common.Attributes;
 using CleanSlice.Api.Common.Interfaces;
 using CleanSlice.Api.Infrastructure.Behaviours;
 using CleanSlice.Api.Infrastructure.Middleware;
@@ -60,7 +61,7 @@ builder.Services.AddMediatR(cfg =>
 
 // Add all implementation of available IDataAccess
 foreach (var t in Assembly.GetExecutingAssembly().GetTypes()
-    .Where(c => !c.IsInterface
+    .Where(c => c.IsClass
         && c.GetInterfaces().Any(x => x.IsGenericType && x.GetGenericTypeDefinition() == typeof(IDataAccess<,,>))))
 {
     var genericInterface = t.GetInterfaces().First(x => x.GetGenericTypeDefinition() == typeof(IDataAccess<,,>));
@@ -70,9 +71,8 @@ foreach (var t in Assembly.GetExecutingAssembly().GetTypes()
 builder.Services.AddTransient<ExceptionHandlingMiddleware>();
 
 builder.Services.AddValidatorsFromAssemblyContaining<Program>(ServiceLifetime.Scoped,
-    (a) => !typeof(INonInjectableValidator).IsAssignableFrom(a.ValidatorType));
+    (filter) => filter.ValidatorType.GetCustomAttributes(typeof(NonInjectableValidatorAttribute), true).Length == 0);
 
-//
 WebApplication app = builder.Build();
 
 app.MapHealthChecks("/health");
