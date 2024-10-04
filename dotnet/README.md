@@ -1,5 +1,17 @@
 # Dotnet specific information
 
+# Getting started
+
+`make run`
+
+All CLI commands are available in `makefile`
+
+## Local URLs:
+
+1. API: https://localhost:5001 (_Configured in `src/Api/Properties/launchSettings.json`_)
+1. Swagger: https://localhost:5001/swagger
+1. Seq: http://localhost:80 (_Configured in `docker-compose.yml`. Contains log level debug and above - more than stdout_)
+
 # Code structure
 
 * src
