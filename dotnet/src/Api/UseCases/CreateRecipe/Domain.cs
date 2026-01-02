@@ -3,15 +3,10 @@ using FluentValidation;
 
 namespace CleanSlice.Api.UseCases.CreateRecipe.Domain
 {
-    public class RecipeBook
+    public class RecipeBook(Func<string, CancellationToken, Task<IEnumerable<Recipe>>> recipesOfMatchingTitle)
     {
-        private readonly AddRecipeValidator validator;
-        public IList<Recipe> Recipes { get; } = new List<Recipe>();
-
-        public RecipeBook(Func<string, CancellationToken, Task<IEnumerable<Recipe>>> recipesOfMatchingTitle)
-        {
-            this.validator = new AddRecipeValidator(recipesOfMatchingTitle);
-        }
+        private readonly AddRecipeValidator validator = new(recipesOfMatchingTitle);
+        public IList<Recipe> Recipes { get; } = [];
 
         public async Task AddRecipeAsync(Recipe recipe)
         {
@@ -40,29 +35,16 @@ namespace CleanSlice.Api.UseCases.CreateRecipe.Domain
         }
     }
 
-    public class Recipe
+    public class Recipe(string title, IList<Ingredient> ingredients)
     {
-        public Recipe(string title, IList<Ingredient> ingredients)
-        {
-            Title = title;
-            Ingredients = ingredients;
-        }
-
-        public string Title { get; }
-        public IList<Ingredient> Ingredients { get; }
+        public string Title => title;
+        public IList<Ingredient> Ingredients => ingredients;
     }
 
-    public class Ingredient
+    public class Ingredient(string name, int amount, string unit)
     {
-        public Ingredient(string name, int amount, string unit)
-        {
-            Name = name;
-            Amount = amount;
-            Unit = unit;
-        }
-
-        public string Name { get; }
-        public int Amount { get; }
-        public string Unit { get; }
+        public string Name => name;
+        public int Amount => amount;
+        public string Unit => unit;
     }
 }
