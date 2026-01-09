@@ -1,46 +1,37 @@
 package demo.cleanslice.usecases.create_recipe;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
-
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import static org.mockito.Mockito.*;
-// import static org.hamcrest.MatcherAssert.*;
-// import static org.hamcrest.Matchers.*;
-import static org.junit.jupiter.api.Assertions.*;
 
 class RecipeBookDomainTests {
-       @SuppressWarnings("unchecked")
-       Function<String, List<Recipe>> getRecipeByTitleFnMock = mock(Function.class);
 
-       private RecipeBookDomain subject;
+    final String recipeTitle = "test-title";
 
-       final String recipeTitle = "test-title";
+    @Test
+    void givenTheRecipeDoesNotExistItShouldAddItToTheRecipeBook()
+        throws RecipeExistsException {
+        Function<String, List<Recipe>> getRecipesByTitleStub = title ->
+            new ArrayList<Recipe>();
+        RecipeBookDomain subject = new RecipeBookDomain(getRecipesByTitleStub);
 
-       @BeforeEach
-       void setup() {
-              subject = new RecipeBookDomain(getRecipeByTitleFnMock);
-       }
+        subject.addRecipe(new Recipe(recipeTitle, null));
 
-       @Test
-       void givenTheRecipeDoesNotExistItShouldAddItToTheRecipeBook() throws RecipeExistsException {
-              when(getRecipeByTitleFnMock.apply(recipeTitle)).thenReturn(new ArrayList<Recipe>());
+        assertEquals(1, subject.recipes.size());
+        assertEquals(subject.recipes.get(0).getTitle(), recipeTitle);
+    }
 
-              subject.addRecipe(new Recipe(recipeTitle, null));
+    @Test
+    void givenTheRecipeDoesExistItShouldNotAddDuplicateToRecipeBook() {
+        Function<String, List<Recipe>> getRecipesByTitleStub = title ->
+            List.of(new Recipe(recipeTitle, null));
+        RecipeBookDomain subject = new RecipeBookDomain(getRecipesByTitleStub);
 
-              assertEquals(1, subject.recipes.size());
-              assertEquals(subject.recipes.get(0).getTitle(), recipeTitle);
-       }
-
-       @Test
-       void givenTheRecipeDoesExistItShouldNotAddDuplicateToRecipeBook() {
-              when(getRecipeByTitleFnMock.apply(recipeTitle)).thenReturn(List.of(new Recipe(recipeTitle, null)));
-
-              assertThrows(RecipeExistsException.class, () -> {
-                     subject.addRecipe(new Recipe(recipeTitle, null));
-              });
-
-       }
+        assertThrows(RecipeExistsException.class, () -> {
+            subject.addRecipe(new Recipe(recipeTitle, null));
+        });
+    }
 }
