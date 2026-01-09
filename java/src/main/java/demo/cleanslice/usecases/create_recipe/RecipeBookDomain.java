@@ -19,7 +19,7 @@ public class RecipeBookDomain {
     }
 
     public void addRecipe(Recipe recipe) throws RecipeExistsException {
-        var recipes = getRecipesByTitle.apply(recipe.getTitle());
+        List<Recipe> recipes = this.getRecipesByTitle.apply(recipe.getTitle());
         if (!recipes.isEmpty()) {
             throw new RecipeExistsException();
         }
