@@ -2,7 +2,11 @@
 
 ## Commands
 
-`./mvnw clean install`
+```bash
+make compile # compiles the code. Run this before build or test
+make build # builds the package. Run this after compile
+make test # runs the tests. Run this after compile
+```
 
 ## Code structure
 We use spring boot but we diverge from their folder/namespace structure. We move to a [package by use case structure](https://medium.com/sahibinden-technology/package-by-layer-vs-package-by-feature-7e89cde2ae3a)
