@@ -9,8 +9,6 @@ import java.util.UUID;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
-import com.j256.ormlite.field.types.UuidType;
-
 import demo.cleanslice.datalayer.RecipeDao;
 
 @Service
