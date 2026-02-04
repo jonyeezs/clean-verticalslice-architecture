@@ -20,6 +20,12 @@
 		<maven.compiler.source>1.17</maven.compiler.source>
 	</properties>
 	<dependencies>
+	    <dependency>
+			<groupId>net.sizovs</groupId>
+			<artifactId>pipelinr</artifactId>
+			<version>0.11</version>
+        </dependency>
+
 
 		<dependency>
 			<groupId>javax.validation</groupId>
