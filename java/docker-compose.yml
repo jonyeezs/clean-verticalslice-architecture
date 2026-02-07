@@ -1,0 +1,20 @@
+version: '3.8'
+services:
+  postgres:
+    container_name: javaarchitecture_postgres
+    image: postgres
+    env_file:
+      - .env
+
+    volumes:
+      - postgres:/data/postgres
+    ports:
+      - '5434:5434'
+    networks:
+      - javaarchitecture
+    restart: unless-stopped
+networks:
+  javaarchitecture:
+    driver: bridge
+volumes:
+  postgres:
