@@ -1,22 +1,24 @@
 package demo.cleanslice.usecases.create_recipe;
 
+import an.awesome.pipelinr.Command;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
-
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
-import an.awesome.pipelinr.Command;
-
 @Component
-public class CreateRecipeHandler implements Command.Handler<APIRequest, CompletableFuture<Response>> {
+public class CreateRecipeHandler
+    implements Command.Handler<APIRequest, CompletableFuture<Response>>
+{
 
     private DataAccess dataAccess;
 
-    public CreateRecipeHandler(@Qualifier("CreateRecipe") DataAccess dataAccess) {
+    public CreateRecipeHandler(
+        @Qualifier("CreateRecipe") DataAccess dataAccess
+    ) {
         this.dataAccess = dataAccess;
     }
-    
+
     @Override
     public CompletableFuture<Response> handle(APIRequest request) {
         try {
@@ -28,9 +30,13 @@ public class CreateRecipeHandler implements Command.Handler<APIRequest, Completa
 
             var updatedDomain = this.dataAccess.Add(domain);
 
-            return CompletableFuture.completedFuture(new Response(Optional.ofNullable(updatedDomain.get(0))));
+            return CompletableFuture.completedFuture(
+                new Response(Optional.ofNullable(updatedDomain.get(0)))
+            );
         } catch (Exception e) {
-            return CompletableFuture.completedFuture(new Response(Optional.empty()));
+            return CompletableFuture.completedFuture(
+                new Response(Optional.empty())
+            );
         }
     }
 }

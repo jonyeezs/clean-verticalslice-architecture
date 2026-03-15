@@ -1,7 +1,6 @@
 package demo.cleanslice.infrastructure;
 
-import java.beans.BeanProperty;
-
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.beans.factory.ObjectProvider;
 
@@ -16,7 +15,7 @@ class PipelineConfiguration {
 
     // Required as the library does not support streaming generic handlers
     @SuppressWarnings({ "rawtypes" })
-    @BeanProperty
+    @Bean
     Pipeline pipeline(
         ObjectProvider<Command.Handler> commandHandlers, ObjectProvider<Notification.Handler> notificationHandlers, ObjectProvider<Command.Middleware> middlewares) {
         return new Pipelinr()
